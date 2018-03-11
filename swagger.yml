@@ -1,0 +1,1085 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  description: 'Item API to help define a thing belonging to users, for example clothing.'
+  title: Worn Out
+  contact:
+    email: a.eckard@hotmail.com
+host: 'localhost:9000'
+basePath: /v1
+tags:
+  - name: Categories
+  - name: Subcategories
+  - name: Details
+  - name: Descriptors
+  - name: Users
+schemes:
+  - http
+paths:
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Get all categories
+      operationId: getCategories
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Categories'
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Categories
+      summary: Create a Category
+      operationId: createCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Category that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/Category'
+      responses:
+        '201':
+          description: Category Created
+          schema:
+            $ref: '#/definitions/Category'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Categories
+      summary: Delete all Categories
+      description: a category deletion will also remove all of its subcategories.
+      operationId: deleteCategories
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  '/categories/{id}':
+    get:
+      tags:
+        - Categories
+      summary: Get a specific Category
+      operationId: getCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Category'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    put:
+      tags:
+        - Categories
+      summary: Update a specific Category
+      operationId: updateCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          name: body
+          description: a category that needs to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Category'
+      responses:
+        '201':
+          description: Category Created
+          schema:
+            $ref: '#/definitions/Category'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    delete:
+      tags:
+        - Categories
+      summary: Delete Category
+      description: A category deletion will also remove all of its subcategories.
+      operationId: deleteCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+  '/subcategories':
+    get:
+      tags:
+        - Subcategories
+      summary: Get all SubCategories
+      operationId: getSubCategories
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/SubCategories'
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Subcategories
+      summary: Create a SubCategory
+      operationId: createSubCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Category that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/SubCategory'
+      responses:
+        '201':
+          description: SubCategory Created
+          schema:
+            $ref: '#/definitions/SubCategory'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Subcategories
+      summary: Delete all SubCategories
+      description: removes all subcategories.
+      operationId: deleteSubCategories
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  '/catagories/{id}/subcategories':
+    get:
+      tags:
+        - Subcategories
+      summary: Get all SubCategories by Category
+      operationId: getSubCategoriesByCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Category ID Associated to Subcategory(s)
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/SubCategories'
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Subcategories
+      summary: Create a SubCategory by Category
+      operationId: createSubCategoryByCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Category ID Associated to Subcategory(s)
+        - in: body
+          name: body
+          description: Category that needs to be added to the DB
+          required: true
+          schema:
+            $ref: '#/definitions/SubCategory'
+      responses:
+        '201':
+          description: SubCategory Created
+          schema:
+            $ref: '#/definitions/SubCategory'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Subcategories
+      summary: Delete all SubCategories By Category
+      description: removes all subcategories from a given category.
+      operationId: deleteSubCategoriesByCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Category ID Associated to Subcategory(s)
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  '/subcategories/{id}':
+    get:
+      tags:
+        - Subcategories
+      summary: Get a specific SubCategory
+      operationId: getSubCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/SubCategory'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    put:
+      tags:
+        - Subcategories
+      summary: Update a specific SubCategory
+      operationId: updateSubCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          name: body
+          description: a subcategory that will be updated
+          required: true
+          schema:
+            $ref: '#/definitions/SubCategory'
+      responses:
+        '201':
+          description: SubCategory Updated
+          schema:
+            $ref: '#/definitions/SubCategory'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    delete:
+      tags:
+        - Subcategories
+      summary: Delete a specific SubCategory
+      description: removes a specfic subcategory.
+      operationId: deleteSubCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+  /details:
+    get:
+      tags:
+        - Details
+      summary: Get all details
+      operationId: getDetails
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Details'
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Details
+      summary: Create a Detail
+      operationId: createDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Detail that will be created
+          required: true
+          schema:
+            $ref: '#/definitions/Detail'
+      responses:
+        '201':
+          description: Category Created
+          schema:
+            $ref: '#/definitions/Detail'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Details
+      summary: Delete all Details
+      description: a details deletion will also remove all of its descriptors.
+      operationId: deleteDetails
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  '/details/{id}':
+    get:
+      tags:
+        - Details
+      summary: Get a specific Detail
+      operationId: getDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Detail'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    put:
+      tags:
+        - Details
+      summary: Update a specific Detail
+      operationId: updateDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          name: body
+          description: a detail that will be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Detail'
+      responses:
+        '201':
+          description: Detail Updated
+          schema:
+            $ref: '#/definitions/Detail'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    delete:
+      tags:
+        - Details
+      summary: Delete Detail
+      description: A detail deletion will also remove all of its descriptors.
+      operationId: deleteDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+  '/descriptors':
+    get:
+      tags:
+        - Descriptors
+      summary: Get all Descriptors
+      operationId: getDescriptors
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Descriptors'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Descriptors
+      summary: Create a  Descriptor
+      operationId: createDescriptor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: a descriptor that will be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Descriptor'
+      responses:
+        '201':
+          description: Descriptor Updated
+          schema:
+            $ref: '#/definitions/Descriptor'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    delete:
+      tags:
+        - Descriptors
+      summary: Delete all Descriptors
+      operationId: deleteDescriptors
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+  '/Descriptors/{id}':
+    get:
+      tags:
+        - Descriptors
+      summary: Get a specific Descriptor
+      operationId: getDescriptor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Descriptor'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    put:
+      tags:
+        - Descriptors
+      summary: Update a specific Descriptor
+      operationId: updateDescriptor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          name: body
+          description: a descriptor that will be updated
+          required: true
+          schema:
+            $ref: '#/definitions/Descriptor'
+      responses:
+        '201':
+          description: Descriptor Updated
+          schema:
+            $ref: '#/definitions/Descriptor'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    delete:
+      tags:
+        - Descriptors
+      summary: Delete Descriptor
+      operationId: deleteDescriptor
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+  '/details/{id}/descriptors':
+    get:
+      tags:
+        - Descriptors
+      summary: Get all Descriptors by Detail
+      operationId: getDescriptorsByDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Detail ID Associated with descriptor(s)
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Description'
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Descriptors
+      summary: Create a Descriptor by Detail
+      operationId: createDescriptorByDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Detail ID Associated with descriptor(s)
+        - in: body
+          name: body
+          description: Descriptor that will be created
+          required: true
+          schema:
+            $ref: '#/definitions/Descriptor'
+      responses:
+        '201':
+          description: Descriptor Created
+          schema:
+            $ref: '#/definitions/Descriptor'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Descriptors
+      summary: Delete all Descriptors by Detail
+      operationId: deleteDescriptorsByDetail
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Detail ID Associated with descriptor(s)
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      operationId: getUsers
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Users'
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Users
+      summary: Create a User
+      operationId: createUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User that needs to be created
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: User Created
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Users
+      summary: Delete all Users
+      operationId: deleteUsers
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  '/users/{id}':
+    get:
+      tags:
+        - Users
+      summary: Get a specific User
+      operationId: getUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    put:
+      tags:
+        - Users
+      summary: Update a specific User
+      operationId: updateUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          name: body
+          description: a user that needs to be updated
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: User Created
+          schema:
+            $ref: '#/definitions/User'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    delete:
+      tags:
+        - Users
+      summary: Delete User
+      operationId: deleteUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Status Ok
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+  /items:
+    get:
+      tags:
+        - Items
+      summary: Get all Items
+      operationId: getItems
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Items'
+        '404':
+          description: No items found
+    post:
+      tags:
+        - Items
+      summary: Create an Item
+      operationId: createItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Item'
+      responses:
+        '201':
+          description: Category Created
+          schema:
+            $ref: '#/definitions/Item'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Items
+      summary: Delete all Items
+      operationId: deleteItems
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  /items/{id}:
+    get:
+      tags:
+        - Items
+      summary: Get specific Item
+      operationId: getItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Item ID
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Items'
+        '404':
+          description: No items found
+    put:
+      tags:
+        - Items
+      summary: update an Item
+      operationId: updateItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Item ID
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Item'
+      responses:
+        '201':
+          description: Category Created
+          schema:
+            $ref: '#/definitions/Item'
+        '400':
+          description: Invalid input
+    delete:
+      tags:
+        - Items
+      summary: Delete an Item
+      operationId: deleteItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Item ID
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  '/users/{id}/items':
+    get:
+      tags:
+        - Items
+      summary: Get all Items by Owner
+      operationId: getItemsByOwner
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Owner's ID
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Items'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+  
+definitions:
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 10
+      category:
+        type: string
+        example: Top
+  Categories:
+    type: array
+    items:
+      $ref: '#/definitions/Category'
+  SubCategory:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 290
+      subcategory:
+        type: string
+        example: Short Sleeve
+  SubCategories:
+    type: array
+    items:
+      $ref: '#/definitions/SubCategory'
+  Catalog:
+    type: object
+    properties:
+      category:
+        $ref: '#/definitions/Category'
+      subcategories:
+        $ref: '#/definitions/SubCategories'
+  Catalogs:
+    type: array
+    items:
+      $ref: '#/definitions/Catalog'
+  Base:
+    type: object
+    properties:
+      category:
+        $ref: '#/definitions/Category'
+      subcategory:
+        $ref: '#/definitions/SubCategory'
+  Detail:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 25
+      detail:
+        type: string
+        example: Brand
+  Details:
+    type: array
+    items:
+      $ref: '#/definitions/Detail'
+  Descriptor:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 89
+      descriptor:
+        type: string
+        example: Ralph Lauren
+  Descriptors:
+    type: array
+    items:
+      $ref: '#/definitions/Descriptor'
+  Description:
+    type: object
+    properties:
+      detail:
+        $ref: '#/definitions/Detail'
+      descriptors:
+        $ref: '#/definitions/Descriptors'
+  Descriptions:
+    type: array
+    items:
+      $ref: '#/definitions/Description'
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      items:
+        $ref: '#/definitions/Items'
+      descriptions:
+        $ref: '#/definitions/Descriptions'
+  Users:
+    type: array
+    items:
+      $ref: '#/definitions/User'
+  Item:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 10
+      name:
+        type: string
+        example: Red Short Sleeve Top
+      owner:
+        type: string
+        example: Lilly Eckard
+      base:
+        $ref: '#/definitions/Base'
+      descriptions:
+        $ref: '#/definitions/Descriptions'
+  Items:
+    type: array
+    items:
+      $ref: '#/definitions/Item'
