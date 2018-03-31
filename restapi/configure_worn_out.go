@@ -6,9 +6,12 @@ import (
 	"crypto/tls"
 	"net/http"
 
+	controller "github.com/aeckard87/WornOut/controllers"
 	errors "github.com/go-openapi/errors"
 	runtime "github.com/go-openapi/runtime"
 	middleware "github.com/go-openapi/runtime/middleware"
+	// "github.com/go-swagger/go-swagger/exagccmples/todo-list/models"
+
 	graceful "github.com/tylerb/graceful"
 
 	"github.com/aeckard87/WornOut/restapi/operations"
@@ -42,9 +45,44 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	//----Categories----
 	api.CategoriesCreateCategoryHandler = categories.CreateCategoryHandlerFunc(func(params categories.CreateCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation categories.CreateCategory has not yet been implemented")
+		created := controller.CreateCategory(params)
+		if created.ID == 0 {
+			return categories.NewCreateCategoryBadRequest()
+		}
+		return categories.NewCreateCategoryCreated().WithPayload(&created)
 	})
+	api.CategoriesUpdateCategoryHandler = categories.UpdateCategoryHandlerFunc(func(params categories.UpdateCategoryParams) middleware.Responder {
+		updated := controller.UpdateCategory(params)
+		if updated.Category != params.Body.Category {
+			return categories.NewUpdateCategoryBadRequest()
+		}
+		return categories.NewUpdateCategoryCreated().WithPayload(&updated)
+	})
+	api.CategoriesDeleteCategoryHandler = categories.DeleteCategoryHandlerFunc(func(params categories.DeleteCategoryParams) middleware.Responder {
+		_ = controller.DeleteCategory(params)
+		return categories.NewDeleteCategoryOK()
+	})
+	api.CategoriesDeleteCategoriesHandler = categories.DeleteCategoriesHandlerFunc(func(params categories.DeleteCategoriesParams) middleware.Responder {
+		_ = controller.DeleteCategories(params)
+		return categories.NewDeleteCategoriesOK()
+	})
+	api.CategoriesGetCategoryHandler = categories.GetCategoryHandlerFunc(func(params categories.GetCategoryParams) middleware.Responder {
+		get := controller.GetCategory(params)
+		if get.Category == "" {
+			return categories.NewGetCategoryNotFound()
+		}
+		return categories.NewGetCategoryOK().WithPayload(&get)
+	})
+
+	api.CategoriesGetCategoriesHandler = categories.GetCategoriesHandlerFunc(func(params categories.GetCategoriesParams) middleware.Responder {
+		getAll := controller.GetCategories(params)
+		return categories.NewGetCategoriesOK().WithPayload(getAll)
+		// return middleware.NotImplemented("operation categories.GetCategories has not yet been implemented")
+	})
+	//------------------------
+
 	api.DescriptorsCreateDescriptorHandler = descriptors.CreateDescriptorHandlerFunc(func(params descriptors.CreateDescriptorParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.CreateDescriptor has not yet been implemented")
 	})
@@ -65,12 +103,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.UsersCreateUserHandler = users.CreateUserHandlerFunc(func(params users.CreateUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.CreateUser has not yet been implemented")
-	})
-	api.CategoriesDeleteCategoriesHandler = categories.DeleteCategoriesHandlerFunc(func(params categories.DeleteCategoriesParams) middleware.Responder {
-		return middleware.NotImplemented("operation categories.DeleteCategories has not yet been implemented")
-	})
-	api.CategoriesDeleteCategoryHandler = categories.DeleteCategoryHandlerFunc(func(params categories.DeleteCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation categories.DeleteCategory has not yet been implemented")
 	})
 	api.DescriptorsDeleteDescriptorHandler = descriptors.DeleteDescriptorHandlerFunc(func(params descriptors.DeleteDescriptorParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.DeleteDescriptor has not yet been implemented")
@@ -107,12 +139,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.UsersDeleteUsersHandler = users.DeleteUsersHandlerFunc(func(params users.DeleteUsersParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.DeleteUsers has not yet been implemented")
-	})
-	api.CategoriesGetCategoriesHandler = categories.GetCategoriesHandlerFunc(func(params categories.GetCategoriesParams) middleware.Responder {
-		return middleware.NotImplemented("operation categories.GetCategories has not yet been implemented")
-	})
-	api.CategoriesGetCategoryHandler = categories.GetCategoryHandlerFunc(func(params categories.GetCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation categories.GetCategory has not yet been implemented")
 	})
 	api.DescriptorsGetDescriptorHandler = descriptors.GetDescriptorHandlerFunc(func(params descriptors.GetDescriptorParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.GetDescriptor has not yet been implemented")
@@ -152,9 +178,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.UsersGetUsersHandler = users.GetUsersHandlerFunc(func(params users.GetUsersParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.GetUsers has not yet been implemented")
-	})
-	api.CategoriesUpdateCategoryHandler = categories.UpdateCategoryHandlerFunc(func(params categories.UpdateCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation categories.UpdateCategory has not yet been implemented")
 	})
 	api.DescriptorsUpdateDescriptorHandler = descriptors.UpdateDescriptorHandlerFunc(func(params descriptors.UpdateDescriptorParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.UpdateDescriptor has not yet been implemented")
