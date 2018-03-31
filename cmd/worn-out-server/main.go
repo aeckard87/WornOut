@@ -51,7 +51,13 @@ func main() {
 
 	defer db.Close()
 
-	db.AutoMigrate(&model.Category{})
+	db.AutoMigrate(&model.Category{}, &model.SubCategory{})
+	// Add foreign key
+	// 1st param : foreignkey field
+	// 2nd param : destination table(id)
+	// 3rd param : ONDELETE
+	// 4th param : ONUPDATE
+	// db.Model(&model.SubCategory{}).AddForeignKey("category_id", "categories(id)", "RESTRICT", "RESTRICT")
 
 	//GORM
 	// db, err := gorm.Open("mysql", "root:password@/dbname?charset=utf8&parseTime=True&loc=Local")

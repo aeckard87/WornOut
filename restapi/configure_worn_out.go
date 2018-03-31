@@ -81,7 +81,45 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 		return categories.NewGetCategoriesOK().WithPayload(getAll)
 		// return middleware.NotImplemented("operation categories.GetCategories has not yet been implemented")
 	})
-	//------------------------
+	//------------------------i
+
+	//----SubCategories----
+	api.SubcategoriesCreateSubCategoryHandler = subcategories.CreateSubCategoryHandlerFunc(func(params subcategories.CreateSubCategoryParams) middleware.Responder {
+		created := controller.CreateSubCategory(params)
+		return subcategories.NewCreateSubCategoryCreated().WithPayload(&created)
+		// return middleware.NotImplemented("operation subcategories.CreateSubCategory has not yet been implemented")
+	})
+	api.SubcategoriesCreateSubCategoryByCategoryHandler = subcategories.CreateSubCategoryByCategoryHandlerFunc(func(params subcategories.CreateSubCategoryByCategoryParams) middleware.Responder {
+		created := controller.CreateSubCategoryByCategory(params)
+		if created.ID == 0 {
+			return subcategories.NewCreateSubCategoryByCategoryBadRequest()
+		}
+		return subcategories.NewCreateSubCategoryByCategoryCreated().WithPayload(&created)
+		// return middleware.NotImplemented("operation subcategories.CreateSubCategoryByCategory has not yet been implemented")
+	})
+	api.SubcategoriesUpdateSubCategoryHandler = subcategories.UpdateSubCategoryHandlerFunc(func(params subcategories.UpdateSubCategoryParams) middleware.Responder {
+		return middleware.NotImplemented("operation subcategories.UpdateSubCategory has not yet been implemented")
+	})
+	api.SubcategoriesDeleteSubCategoriesHandler = subcategories.DeleteSubCategoriesHandlerFunc(func(params subcategories.DeleteSubCategoriesParams) middleware.Responder {
+		return middleware.NotImplemented("operation subcategories.DeleteSubCategories has not yet been implemented")
+	})
+	api.SubcategoriesDeleteSubCategoriesByCategoryHandler = subcategories.DeleteSubCategoriesByCategoryHandlerFunc(func(params subcategories.DeleteSubCategoriesByCategoryParams) middleware.Responder {
+		return middleware.NotImplemented("operation subcategories.DeleteSubCategoriesByCategory has not yet been implemented")
+	})
+	api.SubcategoriesDeleteSubCategoryHandler = subcategories.DeleteSubCategoryHandlerFunc(func(params subcategories.DeleteSubCategoryParams) middleware.Responder {
+		return middleware.NotImplemented("operation subcategories.DeleteSubCategory has not yet been implemented")
+	})
+	api.SubcategoriesGetSubCategoriesHandler = subcategories.GetSubCategoriesHandlerFunc(func(params subcategories.GetSubCategoriesParams) middleware.Responder {
+		return middleware.NotImplemented("operation subcategories.GetSubCategories has not yet been implemented")
+	})
+	api.SubcategoriesGetSubCategoriesByCategoryHandler = subcategories.GetSubCategoriesByCategoryHandlerFunc(func(params subcategories.GetSubCategoriesByCategoryParams) middleware.Responder {
+		return middleware.NotImplemented("operation subcategories.GetSubCategoriesByCategory has not yet been implemented")
+	})
+	api.SubcategoriesGetSubCategoryHandler = subcategories.GetSubCategoryHandlerFunc(func(params subcategories.GetSubCategoryParams) middleware.Responder {
+		return middleware.NotImplemented("operation subcategories.GetSubCategory has not yet been implemented")
+	})
+
+	//-----
 
 	api.DescriptorsCreateDescriptorHandler = descriptors.CreateDescriptorHandlerFunc(func(params descriptors.CreateDescriptorParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.CreateDescriptor has not yet been implemented")
@@ -94,12 +132,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.ItemsCreateItemHandler = items.CreateItemHandlerFunc(func(params items.CreateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.CreateItem has not yet been implemented")
-	})
-	api.SubcategoriesCreateSubCategoryHandler = subcategories.CreateSubCategoryHandlerFunc(func(params subcategories.CreateSubCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.CreateSubCategory has not yet been implemented")
-	})
-	api.SubcategoriesCreateSubCategoryByCategoryHandler = subcategories.CreateSubCategoryByCategoryHandlerFunc(func(params subcategories.CreateSubCategoryByCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.CreateSubCategoryByCategory has not yet been implemented")
 	})
 	api.UsersCreateUserHandler = users.CreateUserHandlerFunc(func(params users.CreateUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.CreateUser has not yet been implemented")
@@ -124,15 +156,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.ItemsDeleteItemsHandler = items.DeleteItemsHandlerFunc(func(params items.DeleteItemsParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.DeleteItems has not yet been implemented")
-	})
-	api.SubcategoriesDeleteSubCategoriesHandler = subcategories.DeleteSubCategoriesHandlerFunc(func(params subcategories.DeleteSubCategoriesParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.DeleteSubCategories has not yet been implemented")
-	})
-	api.SubcategoriesDeleteSubCategoriesByCategoryHandler = subcategories.DeleteSubCategoriesByCategoryHandlerFunc(func(params subcategories.DeleteSubCategoriesByCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.DeleteSubCategoriesByCategory has not yet been implemented")
-	})
-	api.SubcategoriesDeleteSubCategoryHandler = subcategories.DeleteSubCategoryHandlerFunc(func(params subcategories.DeleteSubCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.DeleteSubCategory has not yet been implemented")
 	})
 	api.UsersDeleteUserHandler = users.DeleteUserHandlerFunc(func(params users.DeleteUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.DeleteUser has not yet been implemented")
@@ -164,15 +187,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	api.ItemsGetItemsByOwnerHandler = items.GetItemsByOwnerHandlerFunc(func(params items.GetItemsByOwnerParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.GetItemsByOwner has not yet been implemented")
 	})
-	api.SubcategoriesGetSubCategoriesHandler = subcategories.GetSubCategoriesHandlerFunc(func(params subcategories.GetSubCategoriesParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.GetSubCategories has not yet been implemented")
-	})
-	api.SubcategoriesGetSubCategoriesByCategoryHandler = subcategories.GetSubCategoriesByCategoryHandlerFunc(func(params subcategories.GetSubCategoriesByCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.GetSubCategoriesByCategory has not yet been implemented")
-	})
-	api.SubcategoriesGetSubCategoryHandler = subcategories.GetSubCategoryHandlerFunc(func(params subcategories.GetSubCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.GetSubCategory has not yet been implemented")
-	})
 	api.UsersGetUserHandler = users.GetUserHandlerFunc(func(params users.GetUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.GetUser has not yet been implemented")
 	})
@@ -187,9 +201,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.ItemsUpdateItemHandler = items.UpdateItemHandlerFunc(func(params items.UpdateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.UpdateItem has not yet been implemented")
-	})
-	api.SubcategoriesUpdateSubCategoryHandler = subcategories.UpdateSubCategoryHandlerFunc(func(params subcategories.UpdateSubCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.UpdateSubCategory has not yet been implemented")
 	})
 	api.UsersUpdateUserHandler = users.UpdateUserHandlerFunc(func(params users.UpdateUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.UpdateUser has not yet been implemented")

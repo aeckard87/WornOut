@@ -983,6 +983,9 @@ definitions:
       subcategory:
         type: string
         example: Short Sleeve
+      categoryId:
+        type: integer
+        example: 10
   SubCategories:
     type: array
     items:
