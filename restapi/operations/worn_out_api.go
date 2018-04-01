@@ -57,9 +57,6 @@ func NewWornOutAPI(spec *loads.Document) *WornOutAPI {
 		ItemsCreateItemHandler: items.CreateItemHandlerFunc(func(params items.CreateItemParams) middleware.Responder {
 			return middleware.NotImplemented("operation ItemsCreateItem has not yet been implemented")
 		}),
-		SubcategoriesCreateSubCategoryHandler: subcategories.CreateSubCategoryHandlerFunc(func(params subcategories.CreateSubCategoryParams) middleware.Responder {
-			return middleware.NotImplemented("operation SubcategoriesCreateSubCategory has not yet been implemented")
-		}),
 		SubcategoriesCreateSubCategoryByCategoryHandler: subcategories.CreateSubCategoryByCategoryHandlerFunc(func(params subcategories.CreateSubCategoryByCategoryParams) middleware.Responder {
 			return middleware.NotImplemented("operation SubcategoriesCreateSubCategoryByCategory has not yet been implemented")
 		}),
@@ -210,8 +207,6 @@ type WornOutAPI struct {
 	DetailsCreateDetailHandler details.CreateDetailHandler
 	// ItemsCreateItemHandler sets the operation handler for the create item operation
 	ItemsCreateItemHandler items.CreateItemHandler
-	// SubcategoriesCreateSubCategoryHandler sets the operation handler for the create sub category operation
-	SubcategoriesCreateSubCategoryHandler subcategories.CreateSubCategoryHandler
 	// SubcategoriesCreateSubCategoryByCategoryHandler sets the operation handler for the create sub category by category operation
 	SubcategoriesCreateSubCategoryByCategoryHandler subcategories.CreateSubCategoryByCategoryHandler
 	// UsersCreateUserHandler sets the operation handler for the create user operation
@@ -367,10 +362,6 @@ func (o *WornOutAPI) Validate() error {
 
 	if o.ItemsCreateItemHandler == nil {
 		unregistered = append(unregistered, "items.CreateItemHandler")
-	}
-
-	if o.SubcategoriesCreateSubCategoryHandler == nil {
-		unregistered = append(unregistered, "subcategories.CreateSubCategoryHandler")
 	}
 
 	if o.SubcategoriesCreateSubCategoryByCategoryHandler == nil {
@@ -635,11 +626,6 @@ func (o *WornOutAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/items"] = items.NewCreateItem(o.context, o.ItemsCreateItemHandler)
-
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/subcategories"] = subcategories.NewCreateSubCategory(o.context, o.SubcategoriesCreateSubCategoryHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)

@@ -20,11 +20,16 @@ type Descriptor struct {
 	// descriptor
 	Descriptor string `json:"descriptor,omitempty"`
 
+	// detail Id
+	DetailID int64 `gorm:"foreignkey:DetailID;not null" json:"detailId,omitempty"`
+
 	// id
 	ID int64 `json:"id,omitempty"`
 }
 
 /* polymorph Descriptor descriptor false */
+
+/* polymorph Descriptor detailId false */
 
 /* polymorph Descriptor id false */
 

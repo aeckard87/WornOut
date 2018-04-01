@@ -1054,41 +1054,6 @@ func init() {
           }
         }
       },
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Subcategories"
-        ],
-        "summary": "Create a SubCategory",
-        "operationId": "createSubCategory",
-        "parameters": [
-          {
-            "description": "Category that needs to be added to the DB",
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/SubCategory"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "SubCategory Created",
-            "schema": {
-              "$ref": "#/definitions/SubCategory"
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      },
       "delete": {
         "description": "removes all subcategories.",
         "consumes": [
@@ -1532,6 +1497,10 @@ func init() {
           "type": "string",
           "example": "Ralph Lauren"
         },
+        "detailId": {
+          "type": "integer",
+          "example": 10
+        },
         "id": {
           "type": "integer",
           "example": 89
@@ -1601,6 +1570,10 @@ func init() {
     "SubCategory": {
       "type": "object",
       "properties": {
+        "categoryId": {
+          "type": "integer",
+          "example": 10
+        },
         "id": {
           "type": "integer",
           "example": 290

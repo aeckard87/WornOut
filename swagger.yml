@@ -163,29 +163,6 @@ paths:
             $ref: '#/definitions/SubCategories'
         '404':
           description: No items found
-    post:
-      tags:
-        - Subcategories
-      summary: Create a SubCategory
-      operationId: createSubCategory
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: Category that needs to be added to the DB
-          required: true
-          schema:
-            $ref: '#/definitions/SubCategory'
-      responses:
-        '201':
-          description: SubCategory Created
-          schema:
-            $ref: '#/definitions/SubCategory'
-        '400':
-          description: Invalid input
     delete:
       tags:
         - Subcategories
@@ -1030,6 +1007,9 @@ definitions:
       descriptor:
         type: string
         example: Ralph Lauren
+      detailId:
+        type: integer
+        example: 10
   Descriptors:
     type: array
     items:
