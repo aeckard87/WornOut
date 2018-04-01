@@ -29,7 +29,7 @@ func NewDeleteDescriptor(ctx *middleware.Context, handler DeleteDescriptorHandle
 	return &DeleteDescriptor{Context: ctx, Handler: handler}
 }
 
-/*DeleteDescriptor swagger:route DELETE /Descriptors/{id} Descriptors deleteDescriptor
+/*DeleteDescriptor swagger:route DELETE /descriptors/{id} Descriptors deleteDescriptor
 
 Delete Descriptor
 

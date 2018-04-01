@@ -126,7 +126,7 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 
 	//-----
 
-	//----DETAILs----
+	//----DETAILS----
 	api.DetailsCreateDetailHandler = details.CreateDetailHandlerFunc(func(params details.CreateDetailParams) middleware.Responder {
 		created := controller.CreateDetail(params)
 		if created.ID == 0 {
@@ -163,26 +163,63 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 
 	//--------
 
-	api.DescriptorsCreateDescriptorHandler = descriptors.CreateDescriptorHandlerFunc(func(params descriptors.CreateDescriptorParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.CreateDescriptor has not yet been implemented")
-	})
+	//----DESCRIPTORS----
 	api.DescriptorsCreateDescriptorByDetailHandler = descriptors.CreateDescriptorByDetailHandlerFunc(func(params descriptors.CreateDescriptorByDetailParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.CreateDescriptorByDetail has not yet been implemented")
+		created := controller.CreateDescriptorByDetail(params)
+		if created.ID == 0 {
+			return descriptors.NewCreateDescriptorByDetailBadRequest()
+		}
+		return descriptors.NewCreateDescriptorByDetailCreated().WithPayload(&created)
 	})
+	api.DescriptorsUpdateDescriptorHandler = descriptors.UpdateDescriptorHandlerFunc(func(params descriptors.UpdateDescriptorParams) middleware.Responder {
+		updated := controller.UpdateDescriptor(params)
+		if updated.Descriptor != params.Body.Descriptor {
+			return descriptors.NewUpdateDescriptorBadRequest()
+		}
+		return descriptors.NewUpdateDescriptorCreated().WithPayload(&updated)
+	})
+	api.DescriptorsDeleteDescriptorHandler = descriptors.DeleteDescriptorHandlerFunc(func(params descriptors.DeleteDescriptorParams) middleware.Responder {
+		_ = controller.DeleteDescriptor(params)
+		return descriptors.NewDeleteDescriptorOK()
+	})
+	api.DescriptorsDeleteDescriptorsHandler = descriptors.DeleteDescriptorsHandlerFunc(func(params descriptors.DeleteDescriptorsParams) middleware.Responder {
+		_ = controller.DeleteDescriptors(params)
+		return descriptors.NewDeleteDescriptorsOK()
+	})
+	api.DescriptorsDeleteDescriptorsByDetailHandler = descriptors.DeleteDescriptorsByDetailHandlerFunc(func(params descriptors.DeleteDescriptorsByDetailParams) middleware.Responder {
+		_ = controller.DeleteDescriptorsByDetail(params)
+		return descriptors.NewDeleteDescriptorsByDetailOK()
+	})
+	api.DescriptorsGetDescriptorHandler = descriptors.GetDescriptorHandlerFunc(func(params descriptors.GetDescriptorParams) middleware.Responder {
+		fetched := controller.GetDescriptor(params)
+		if fetched.Descriptor == "" {
+			return descriptors.NewGetDescriptorBadRequest()
+		}
+		return descriptors.NewGetDescriptorOK().WithPayload(&fetched)
+	})
+	api.DescriptorsGetDescriptorsHandler = descriptors.GetDescriptorsHandlerFunc(func(params descriptors.GetDescriptorsParams) middleware.Responder {
+		fetched := controller.GetDescriptors(params)
+		if fetched[0].Descriptor == "" {
+			return descriptors.NewGetDescriptorsBadRequest()
+		}
+		return descriptors.NewGetDescriptorsOK().WithPayload(fetched)
+	})
+	api.DescriptorsGetDescriptorsByDetailHandler = descriptors.GetDescriptorsByDetailHandlerFunc(func(params descriptors.GetDescriptorsByDetailParams) middleware.Responder {
+		fetched := controller.GetDescriptorsByDetail(params)
+		if fetched[0].Descriptor == "" {
+			return descriptors.NewGetDescriptorsByDetailNotFound()
+		}
+		return descriptors.NewGetDescriptorsByDetailOK().WithPayload(fetched)
+		// return descriptors.NewGetDescriptorsByDetailOK().WithPayload(fetched)
+	})
+
+	//-------
+
 	api.ItemsCreateItemHandler = items.CreateItemHandlerFunc(func(params items.CreateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.CreateItem has not yet been implemented")
 	})
 	api.UsersCreateUserHandler = users.CreateUserHandlerFunc(func(params users.CreateUserParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.CreateUser has not yet been implemented")
-	})
-	api.DescriptorsDeleteDescriptorHandler = descriptors.DeleteDescriptorHandlerFunc(func(params descriptors.DeleteDescriptorParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.DeleteDescriptor has not yet been implemented")
-	})
-	api.DescriptorsDeleteDescriptorsHandler = descriptors.DeleteDescriptorsHandlerFunc(func(params descriptors.DeleteDescriptorsParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.DeleteDescriptors has not yet been implemented")
-	})
-	api.DescriptorsDeleteDescriptorsByDetailHandler = descriptors.DeleteDescriptorsByDetailHandlerFunc(func(params descriptors.DeleteDescriptorsByDetailParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.DeleteDescriptorsByDetail has not yet been implemented")
 	})
 	api.ItemsDeleteItemHandler = items.DeleteItemHandlerFunc(func(params items.DeleteItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.DeleteItem has not yet been implemented")
@@ -195,15 +232,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.UsersDeleteUsersHandler = users.DeleteUsersHandlerFunc(func(params users.DeleteUsersParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.DeleteUsers has not yet been implemented")
-	})
-	api.DescriptorsGetDescriptorHandler = descriptors.GetDescriptorHandlerFunc(func(params descriptors.GetDescriptorParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.GetDescriptor has not yet been implemented")
-	})
-	api.DescriptorsGetDescriptorsHandler = descriptors.GetDescriptorsHandlerFunc(func(params descriptors.GetDescriptorsParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.GetDescriptors has not yet been implemented")
-	})
-	api.DescriptorsGetDescriptorsByDetailHandler = descriptors.GetDescriptorsByDetailHandlerFunc(func(params descriptors.GetDescriptorsByDetailParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.GetDescriptorsByDetail has not yet been implemented")
 	})
 	api.ItemsGetItemHandler = items.GetItemHandlerFunc(func(params items.GetItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.GetItem has not yet been implemented")
@@ -219,9 +247,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.UsersGetUsersHandler = users.GetUsersHandlerFunc(func(params users.GetUsersParams) middleware.Responder {
 		return middleware.NotImplemented("operation users.GetUsers has not yet been implemented")
-	})
-	api.DescriptorsUpdateDescriptorHandler = descriptors.UpdateDescriptorHandlerFunc(func(params descriptors.UpdateDescriptorParams) middleware.Responder {
-		return middleware.NotImplemented("operation descriptors.UpdateDescriptor has not yet been implemented")
 	})
 	api.ItemsUpdateItemHandler = items.UpdateItemHandlerFunc(func(params items.UpdateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.UpdateItem has not yet been implemented")

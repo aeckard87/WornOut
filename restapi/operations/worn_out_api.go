@@ -650,7 +650,7 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
-	o.handlers["DELETE"]["/Descriptors/{id}"] = descriptors.NewDeleteDescriptor(o.context, o.DescriptorsDeleteDescriptorHandler)
+	o.handlers["DELETE"]["/descriptors/{id}"] = descriptors.NewDeleteDescriptor(o.context, o.DescriptorsDeleteDescriptorHandler)
 
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
@@ -720,7 +720,7 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/Descriptors/{id}"] = descriptors.NewGetDescriptor(o.context, o.DescriptorsGetDescriptorHandler)
+	o.handlers["GET"]["/descriptors/{id}"] = descriptors.NewGetDescriptor(o.context, o.DescriptorsGetDescriptorHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -790,7 +790,7 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}
-	o.handlers["PUT"]["/Descriptors/{id}"] = descriptors.NewUpdateDescriptor(o.context, o.DescriptorsUpdateDescriptorHandler)
+	o.handlers["PUT"]["/descriptors/{id}"] = descriptors.NewUpdateDescriptor(o.context, o.DescriptorsUpdateDescriptorHandler)
 
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)

@@ -8,22 +8,6 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/subcategories"
 )
 
-//deprecate this function
-func CreateSubCategory(params subcategories.CreateSubCategoryParams) model.SubCategory {
-	db := dbpkg.Connect()
-
-	defer db.Close()
-
-	// fmt.Println("New Record for SubCategory", params.SubCategory)
-
-	db.Create(&params.Body)
-
-	var sc model.SubCategory
-
-	db.Where("subcategory = ?", params.Body.Subcategory).Find(&sc)
-	return sc
-}
-
 func CreateSubCategoryByCategory(params subcategories.CreateSubCategoryByCategoryParams) model.SubCategory {
 	db := dbpkg.Connect()
 	defer db.Close()

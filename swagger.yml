@@ -515,7 +515,7 @@ paths:
           description: Invalid input
         '404':
           description: No items found
-  '/Descriptors/{id}':
+  '/descriptors/{id}':
     get:
       tags:
         - Descriptors
@@ -609,7 +609,7 @@ paths:
         '200':
           description: Status Ok
           schema:
-            $ref: '#/definitions/Description'
+            $ref: '#/definitions/Descriptors'
         '404':
           description: No items found
     post:

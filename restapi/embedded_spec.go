@@ -29,119 +29,6 @@ func init() {
   "host": "localhost:9000",
   "basePath": "/v1",
   "paths": {
-    "/Descriptors/{id}": {
-      "get": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Descriptors"
-        ],
-        "summary": "Get a specific Descriptor",
-        "operationId": "getDescriptor",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Status Ok",
-            "schema": {
-              "$ref": "#/definitions/Descriptor"
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "404": {
-            "description": "No items found"
-          }
-        }
-      },
-      "put": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Descriptors"
-        ],
-        "summary": "Update a specific Descriptor",
-        "operationId": "updateDescriptor",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "description": "a descriptor that will be updated",
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Descriptor"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Descriptor Updated",
-            "schema": {
-              "$ref": "#/definitions/Descriptor"
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "404": {
-            "description": "No items found"
-          }
-        }
-      },
-      "delete": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Descriptors"
-        ],
-        "summary": "Delete Descriptor",
-        "operationId": "deleteDescriptor",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Status Ok"
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "404": {
-            "description": "No items found"
-          }
-        }
-      }
-    },
     "/catagories/{id}/subcategories": {
       "get": {
         "consumes": [
@@ -538,6 +425,119 @@ func init() {
         }
       }
     },
+    "/descriptors/{id}": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Descriptors"
+        ],
+        "summary": "Get a specific Descriptor",
+        "operationId": "getDescriptor",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status Ok",
+            "schema": {
+              "$ref": "#/definitions/Descriptor"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "No items found"
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Descriptors"
+        ],
+        "summary": "Update a specific Descriptor",
+        "operationId": "updateDescriptor",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "description": "a descriptor that will be updated",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Descriptor"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Descriptor Updated",
+            "schema": {
+              "$ref": "#/definitions/Descriptor"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "No items found"
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Descriptors"
+        ],
+        "summary": "Delete Descriptor",
+        "operationId": "deleteDescriptor",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status Ok"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "No items found"
+          }
+        }
+      }
+    },
     "/details": {
       "get": {
         "consumes": [
@@ -761,7 +761,7 @@ func init() {
           "200": {
             "description": "Status Ok",
             "schema": {
-              "$ref": "#/definitions/Description"
+              "$ref": "#/definitions/Descriptors"
             }
           },
           "404": {

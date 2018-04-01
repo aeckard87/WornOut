@@ -42,7 +42,7 @@ func (o *DeleteDescriptorURL) SetBasePath(bp string) {
 func (o *DeleteDescriptorURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/Descriptors/{id}"
+	var _path = "/descriptors/{id}"
 
 	id := swag.FormatInt64(o.ID)
 	if id != "" {

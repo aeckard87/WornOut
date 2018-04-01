@@ -29,7 +29,7 @@ func NewGetDescriptor(ctx *middleware.Context, handler GetDescriptorHandler) *Ge
 	return &GetDescriptor{Context: ctx, Handler: handler}
 }
 
-/*GetDescriptor swagger:route GET /Descriptors/{id} Descriptors getDescriptor
+/*GetDescriptor swagger:route GET /descriptors/{id} Descriptors getDescriptor
 
 Get a specific Descriptor
 

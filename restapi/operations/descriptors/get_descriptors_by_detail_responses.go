@@ -25,7 +25,7 @@ type GetDescriptorsByDetailOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Description `json:"body,omitempty"`
+	Payload models.Descriptors `json:"body,omitempty"`
 }
 
 // NewGetDescriptorsByDetailOK creates GetDescriptorsByDetailOK with default headers values
@@ -34,13 +34,13 @@ func NewGetDescriptorsByDetailOK() *GetDescriptorsByDetailOK {
 }
 
 // WithPayload adds the payload to the get descriptors by detail o k response
-func (o *GetDescriptorsByDetailOK) WithPayload(payload *models.Description) *GetDescriptorsByDetailOK {
+func (o *GetDescriptorsByDetailOK) WithPayload(payload models.Descriptors) *GetDescriptorsByDetailOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get descriptors by detail o k response
-func (o *GetDescriptorsByDetailOK) SetPayload(payload *models.Description) {
+func (o *GetDescriptorsByDetailOK) SetPayload(payload models.Descriptors) {
 	o.Payload = payload
 }
 
@@ -48,12 +48,15 @@ func (o *GetDescriptorsByDetailOK) SetPayload(payload *models.Description) {
 func (o *GetDescriptorsByDetailOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(200)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
+	payload := o.Payload
+	if payload == nil {
+		payload = make(models.Descriptors, 0, 50)
 	}
+
+	if err := producer.Produce(rw, payload); err != nil {
+		panic(err) // let the recovery middleware deal with this
+	}
+
 }
 
 // GetDescriptorsByDetailNotFoundCode is the HTTP code returned for type GetDescriptorsByDetailNotFound

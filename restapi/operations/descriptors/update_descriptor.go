@@ -29,7 +29,7 @@ func NewUpdateDescriptor(ctx *middleware.Context, handler UpdateDescriptorHandle
 	return &UpdateDescriptor{Context: ctx, Handler: handler}
 }
 
-/*UpdateDescriptor swagger:route PUT /Descriptors/{id} Descriptors updateDescriptor
+/*UpdateDescriptor swagger:route PUT /descriptors/{id} Descriptors updateDescriptor
 
 Update a specific Descriptor
 
