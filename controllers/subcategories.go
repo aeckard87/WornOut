@@ -5,10 +5,10 @@ import (
 
 	dbpkg "github.com/aeckard87/WornOut/db"
 	model "github.com/aeckard87/WornOut/models"
-	"github.com/aeckard87/WornOut/restapi/operations/categories"
 	"github.com/aeckard87/WornOut/restapi/operations/subcategories"
 )
 
+//deprecate this function
 func CreateSubCategory(params subcategories.CreateSubCategoryParams) model.SubCategory {
 	db := dbpkg.Connect()
 
@@ -18,33 +18,23 @@ func CreateSubCategory(params subcategories.CreateSubCategoryParams) model.SubCa
 
 	db.Create(&params.Body)
 
-	var subcategory model.SubCategory
+	var sc model.SubCategory
 
-	db.Where("subcategory = ?", params.Body.Subcategory).Find(&subcategory)
-	return subcategory
+	db.Where("subcategory = ?", params.Body.Subcategory).Find(&sc)
+	return sc
 }
 
 func CreateSubCategoryByCategory(params subcategories.CreateSubCategoryByCategoryParams) model.SubCategory {
-	fmt.Println("Create Subcateogry by Category")
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("New Record for SubCategory", params.SubCategory)
-	// var category model.Category
-	var subcategory model.SubCategory
-
-	// category.ID = params.ID
-
-	// fmt.Println("CAT ID:", category.ID)
-	fmt.Println("PARMS ID:", params.ID)
-	fmt.Println("BODY ID:", params.Body.ID)
+	var sc model.SubCategory
 
 	// db.Create(&params.Body).Related(&category)
 	db.Exec("insert into sub_categories (subcategory,category_id) values (?,?)", params.Body.Subcategory, params.ID)
 
-	db.Where("subcategory = ?", params.Body.Subcategory).Find(&subcategory)
-	return subcategory
+	db.Where("subcategory = ?", params.Body.Subcategory).Find(&sc)
+	return sc
 }
 
 func UpdateSubCategory(params subcategories.UpdateSubCategoryParams) model.SubCategory {
@@ -53,14 +43,11 @@ func UpdateSubCategory(params subcategories.UpdateSubCategoryParams) model.SubCa
 
 	defer db.Close()
 
-	// fmt.Println("Update Record to SubCategory", params.Body.SubCategory)
+	var sc model.SubCategory
 
-	var subcategory model.SubCategory
-
-	db.Model(&subcategory).Where("id = ?", params.ID).Update("subcategory", params.Body.Subcategory)
-	// fmt.Println("UPDATED", SubCategory)
-	subcategory.ID = params.ID
-	return subcategory
+	db.Model(&sc).Where("id = ?", params.ID).Update("subcategory", params.Body.Subcategory)
+	db.Where("id = ?", params.ID).Find(&sc)
+	return sc
 
 }
 
@@ -70,14 +57,11 @@ func DeleteSubCategory(params subcategories.DeleteSubCategoryParams) model.SubCa
 
 	defer db.Close()
 
-	// fmt.Println("Delete Record ID", params.ID)
+	var sc model.SubCategory
 
-	var SubCategory model.SubCategory
-	SubCategory.ID = params.ID
+	db.Where("id = ?", params.ID).Delete(&sc)
 
-	db.Delete(&SubCategory)
-
-	return SubCategory
+	return sc
 
 }
 
@@ -89,11 +73,11 @@ func DeleteSubcategoriesByCategory(params subcategories.DeleteSubCategoriesByCat
 
 	// fmt.Println("Delete Record ID", params.ID)
 
-	var SubCategory model.SubCategory
+	var sc model.SubCategory
 
-	db.Delete(&SubCategory)
+	db.Where("category_id = ?", params.ID).Delete(&sc)
 
-	return SubCategory
+	return sc
 
 }
 
@@ -105,40 +89,47 @@ func DeleteSubCategories(params subcategories.DeleteSubCategoriesParams) model.S
 
 	// fmt.Println("Delete Record ID", params.ID)
 
-	var SubCategory model.SubCategory
+	var sc model.SubCategory
 
-	db.Delete(&SubCategory)
+	db.Delete(&sc)
 
-	return SubCategory
+	return sc
 
 }
 func GetSubCategory(params subcategories.GetSubCategoryParams) model.SubCategory {
+	fmt.Println("GetSubCategory")
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	fmt.Println("Get Record ID", params.ID)
+	var sc model.SubCategory
 
-	var SubCategory model.SubCategory
-	SubCategory.ID = params.ID
+	db.Where("id = ?", params.ID).Find(&sc)
 
-	db.First(&SubCategory)
-
-	return SubCategory
+	return sc
 
 }
 
-func Getsubcategories(params categories.GetCategoriesParams) model.Categories {
+func GetSubcategoriesByCategory(params subcategories.GetSubCategoriesByCategoryParams) model.SubCategories {
+	fmt.Println("GetSubCategoriesByCategory")
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	fmt.Println("Get All Records")
+	var sc model.SubCategories
 
-	var subcategories model.Categories
+	db.Where("category_id = ?", params.ID).Find(&sc)
 
-	db.Find(&subcategories)
+	return sc
+}
 
-	return subcategories
+func GetSubcategories(params subcategories.GetSubCategoriesParams) model.SubCategories {
+	fmt.Println("GetSubCategories")
+	db := dbpkg.Connect()
+	defer db.Close()
+
+	var sc model.SubCategories
+
+	db.Find(&sc)
+
+	return sc
 
 }

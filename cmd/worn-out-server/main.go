@@ -51,39 +51,9 @@ func main() {
 
 	defer db.Close()
 
-	db.AutoMigrate(&model.Category{}, &model.SubCategory{})
-	// Add foreign key
-	// 1st param : foreignkey field
-	// 2nd param : destination table(id)
-	// 3rd param : ONDELETE
-	// 4th param : ONUPDATE
-	// db.Model(&model.SubCategory{}).AddForeignKey("category_id", "categories(id)", "RESTRICT", "RESTRICT")
+	db.AutoMigrate(&model.Category{}, &model.SubCategory{}, &model.Detail{})
 
-	//GORM
-	// db, err := gorm.Open("mysql", "root:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-
-	// if err != nil {
-	// 	panic("failed to connect database")
-	// }
-
-	// defer db.Close()
-
-	// // Migrate the schema
-	// db.AutoMigrate(&Product{})
-
-	// // Create
-	// db.Create(&Product{Code: "L1212", Price: 1000})
-
-	// // Read
-	// var product Product
-	// db.First(&product, 1)                   // find product with id 1
-	// db.First(&product, "code = ?", "L1212") // find product with code l1212
-
-	// // Update - update product's price to 2000
-	// db.Model(&product).Update("Price", 2000)
-
-	//-------------GORM END-------------
-
+	//init server
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {
 		_, err := parser.AddGroup(optsGroup.ShortDescription, optsGroup.LongDescription, optsGroup.Options)

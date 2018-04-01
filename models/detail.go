@@ -18,10 +18,10 @@ import (
 type Detail struct {
 
 	// detail
-	Detail string `json:"detail,omitempty"`
+	Detail string `gorm:"not null; unique" json:"detail,omitempty"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	ID int64 `gorm:"primary_key;AUTO_INCEMENT;not null" json:"id,omitempty"`
 }
 
 /* polymorph Detail detail false */

@@ -24,7 +24,7 @@ type SubCategory struct {
 	Subcategory string `gorm:"unique; not null" json:"subcategory,omitempty"`
 
 	//Category Foreign Key
-	CategoryID int64 `gorm:"foreignkey:Category;not null" json:"category_id,omitempty"`
+	CategoryID int64 `gorm:"foreignkey:CategoryID;not null" json:"category_id,omitempty"`
 }
 
 /* polymorph SubCategory id false */

@@ -84,51 +84,90 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	//------------------------i
 
 	//----SubCategories----
-	api.SubcategoriesCreateSubCategoryHandler = subcategories.CreateSubCategoryHandlerFunc(func(params subcategories.CreateSubCategoryParams) middleware.Responder {
-		created := controller.CreateSubCategory(params)
-		return subcategories.NewCreateSubCategoryCreated().WithPayload(&created)
-		// return middleware.NotImplemented("operation subcategories.CreateSubCategory has not yet been implemented")
-	})
 	api.SubcategoriesCreateSubCategoryByCategoryHandler = subcategories.CreateSubCategoryByCategoryHandlerFunc(func(params subcategories.CreateSubCategoryByCategoryParams) middleware.Responder {
 		created := controller.CreateSubCategoryByCategory(params)
 		if created.ID == 0 {
 			return subcategories.NewCreateSubCategoryByCategoryBadRequest()
 		}
 		return subcategories.NewCreateSubCategoryByCategoryCreated().WithPayload(&created)
-		// return middleware.NotImplemented("operation subcategories.CreateSubCategoryByCategory has not yet been implemented")
 	})
 	api.SubcategoriesUpdateSubCategoryHandler = subcategories.UpdateSubCategoryHandlerFunc(func(params subcategories.UpdateSubCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.UpdateSubCategory has not yet been implemented")
+		updated := controller.UpdateSubCategory(params)
+		if updated.Subcategory != params.Body.Subcategory {
+			return subcategories.NewUpdateSubCategoryNotFound()
+		}
+		return subcategories.NewUpdateSubCategoryCreated().WithPayload(&updated)
 	})
 	api.SubcategoriesDeleteSubCategoriesHandler = subcategories.DeleteSubCategoriesHandlerFunc(func(params subcategories.DeleteSubCategoriesParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.DeleteSubCategories has not yet been implemented")
+		_ = controller.DeleteSubCategories(params)
+		return subcategories.NewDeleteSubCategoriesOK()
 	})
+
 	api.SubcategoriesDeleteSubCategoriesByCategoryHandler = subcategories.DeleteSubCategoriesByCategoryHandlerFunc(func(params subcategories.DeleteSubCategoriesByCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.DeleteSubCategoriesByCategory has not yet been implemented")
+		_ = controller.DeleteSubcategoriesByCategory(params)
+		return subcategories.NewDeleteSubCategoryOK()
 	})
 	api.SubcategoriesDeleteSubCategoryHandler = subcategories.DeleteSubCategoryHandlerFunc(func(params subcategories.DeleteSubCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.DeleteSubCategory has not yet been implemented")
+		_ = controller.DeleteSubCategory(params)
+		return subcategories.NewDeleteSubCategoryOK()
 	})
 	api.SubcategoriesGetSubCategoriesHandler = subcategories.GetSubCategoriesHandlerFunc(func(params subcategories.GetSubCategoriesParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.GetSubCategories has not yet been implemented")
+		fetched := controller.GetSubcategories(params)
+		return subcategories.NewGetSubCategoriesOK().WithPayload(fetched)
 	})
 	api.SubcategoriesGetSubCategoriesByCategoryHandler = subcategories.GetSubCategoriesByCategoryHandlerFunc(func(params subcategories.GetSubCategoriesByCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.GetSubCategoriesByCategory has not yet been implemented")
+		fetched := controller.GetSubcategoriesByCategory(params)
+		return subcategories.NewGetSubCategoriesByCategoryOK().WithPayload(fetched)
 	})
 	api.SubcategoriesGetSubCategoryHandler = subcategories.GetSubCategoryHandlerFunc(func(params subcategories.GetSubCategoryParams) middleware.Responder {
-		return middleware.NotImplemented("operation subcategories.GetSubCategory has not yet been implemented")
+		fetched := controller.GetSubCategory(params)
+		return subcategories.NewGetSubCategoryOK().WithPayload(&fetched)
 	})
 
 	//-----
+
+	//----DETAILs----
+	api.DetailsCreateDetailHandler = details.CreateDetailHandlerFunc(func(params details.CreateDetailParams) middleware.Responder {
+		created := controller.CreateDetail(params)
+		if created.ID == 0 {
+			return details.NewCreateDetailBadRequest()
+		}
+		return details.NewCreateDetailCreated().WithPayload(&created)
+	})
+	api.DetailsUpdateDetailHandler = details.UpdateDetailHandlerFunc(func(params details.UpdateDetailParams) middleware.Responder {
+		updated := controller.UpdateDetail(params)
+		if updated.Detail != params.Body.Detail {
+			return details.NewUpdateDetailBadRequest()
+		}
+		return details.NewUpdateDetailCreated().WithPayload(&updated)
+	})
+	api.DetailsDeleteDetailHandler = details.DeleteDetailHandlerFunc(func(params details.DeleteDetailParams) middleware.Responder {
+		_ = controller.DeleteDetail(params)
+		return details.NewDeleteDetailOK()
+	})
+	api.DetailsDeleteDetailsHandler = details.DeleteDetailsHandlerFunc(func(params details.DeleteDetailsParams) middleware.Responder {
+		_ = controller.DeleteDetails(params)
+		return details.NewDeleteDetailsOK()
+	})
+	api.DetailsGetDetailHandler = details.GetDetailHandlerFunc(func(params details.GetDetailParams) middleware.Responder {
+		fetched := controller.GetDetail(params)
+		if fetched.Detail == "" {
+			return details.NewGetDetailBadRequest()
+		}
+		return details.NewGetDetailOK().WithPayload(&fetched)
+	})
+	api.DetailsGetDetailsHandler = details.GetDetailsHandlerFunc(func(params details.GetDetailsParams) middleware.Responder {
+		fetched := controller.GetDetails(params)
+		return details.NewGetDetailsOK().WithPayload(fetched)
+	})
+
+	//--------
 
 	api.DescriptorsCreateDescriptorHandler = descriptors.CreateDescriptorHandlerFunc(func(params descriptors.CreateDescriptorParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.CreateDescriptor has not yet been implemented")
 	})
 	api.DescriptorsCreateDescriptorByDetailHandler = descriptors.CreateDescriptorByDetailHandlerFunc(func(params descriptors.CreateDescriptorByDetailParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.CreateDescriptorByDetail has not yet been implemented")
-	})
-	api.DetailsCreateDetailHandler = details.CreateDetailHandlerFunc(func(params details.CreateDetailParams) middleware.Responder {
-		return middleware.NotImplemented("operation details.CreateDetail has not yet been implemented")
 	})
 	api.ItemsCreateItemHandler = items.CreateItemHandlerFunc(func(params items.CreateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.CreateItem has not yet been implemented")
@@ -144,12 +183,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.DescriptorsDeleteDescriptorsByDetailHandler = descriptors.DeleteDescriptorsByDetailHandlerFunc(func(params descriptors.DeleteDescriptorsByDetailParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.DeleteDescriptorsByDetail has not yet been implemented")
-	})
-	api.DetailsDeleteDetailHandler = details.DeleteDetailHandlerFunc(func(params details.DeleteDetailParams) middleware.Responder {
-		return middleware.NotImplemented("operation details.DeleteDetail has not yet been implemented")
-	})
-	api.DetailsDeleteDetailsHandler = details.DeleteDetailsHandlerFunc(func(params details.DeleteDetailsParams) middleware.Responder {
-		return middleware.NotImplemented("operation details.DeleteDetails has not yet been implemented")
 	})
 	api.ItemsDeleteItemHandler = items.DeleteItemHandlerFunc(func(params items.DeleteItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.DeleteItem has not yet been implemented")
@@ -172,12 +205,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	api.DescriptorsGetDescriptorsByDetailHandler = descriptors.GetDescriptorsByDetailHandlerFunc(func(params descriptors.GetDescriptorsByDetailParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.GetDescriptorsByDetail has not yet been implemented")
 	})
-	api.DetailsGetDetailHandler = details.GetDetailHandlerFunc(func(params details.GetDetailParams) middleware.Responder {
-		return middleware.NotImplemented("operation details.GetDetail has not yet been implemented")
-	})
-	api.DetailsGetDetailsHandler = details.GetDetailsHandlerFunc(func(params details.GetDetailsParams) middleware.Responder {
-		return middleware.NotImplemented("operation details.GetDetails has not yet been implemented")
-	})
 	api.ItemsGetItemHandler = items.GetItemHandlerFunc(func(params items.GetItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.GetItem has not yet been implemented")
 	})
@@ -195,9 +222,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.DescriptorsUpdateDescriptorHandler = descriptors.UpdateDescriptorHandlerFunc(func(params descriptors.UpdateDescriptorParams) middleware.Responder {
 		return middleware.NotImplemented("operation descriptors.UpdateDescriptor has not yet been implemented")
-	})
-	api.DetailsUpdateDetailHandler = details.UpdateDetailHandlerFunc(func(params details.UpdateDetailParams) middleware.Responder {
-		return middleware.NotImplemented("operation details.UpdateDetail has not yet been implemented")
 	})
 	api.ItemsUpdateItemHandler = items.UpdateItemHandlerFunc(func(params items.UpdateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.UpdateItem has not yet been implemented")
