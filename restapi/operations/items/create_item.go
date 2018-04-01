@@ -29,7 +29,7 @@ func NewCreateItem(ctx *middleware.Context, handler CreateItemHandler) *CreateIt
 	return &CreateItem{Context: ctx, Handler: handler}
 }
 
-/*CreateItem swagger:route POST /items Items createItem
+/*CreateItem swagger:route POST /users/{id}/items Items createItem
 
 Create an Item
 

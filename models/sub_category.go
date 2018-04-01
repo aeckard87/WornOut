@@ -18,7 +18,7 @@ import (
 type SubCategory struct {
 
 	// id
-	ID int64 `gorm:"primary_key;AUTO_INCEMENT;not null" json:"id,omitempty"`
+	ID int64 `gorm:"primary_key;auto_incement;not null" json:"id,omitempty"`
 
 	// subcategory
 	Subcategory string `gorm:"unique; not null" json:"subcategory,omitempty"`

@@ -18,10 +18,10 @@ import (
 type Item struct {
 
 	// base
-	Base *Base `json:"base,omitempty"`
+	Base *SubCategory `json:"base,omitempty"`
 
 	// descriptions
-	Descriptions Descriptions `json:"descriptions"`
+	Descriptions Descriptors `json:"descriptions"`
 
 	// id
 	ID int64 `json:"id,omitempty"`

@@ -21,7 +21,7 @@ type Detail struct {
 	Detail string `gorm:"not null; unique" json:"detail,omitempty"`
 
 	// id
-	ID int64 `gorm:"primary_key;AUTO_INCEMENT;not null" json:"id,omitempty"`
+	ID int64 `gorm:"primary_key;auto_incement;not null" json:"id,omitempty"`
 }
 
 /* polymorph Detail detail false */

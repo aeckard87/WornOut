@@ -51,7 +51,7 @@ func main() {
 
 	defer db.Close()
 
-	db.AutoMigrate(&model.Category{}, &model.SubCategory{}, &model.Detail{}, &model.Descriptor{})
+	db.AutoMigrate(&model.Category{}, &model.SubCategory{}, &model.Detail{}, &model.Descriptor{}, &model.User{})
 
 	//init server
 	server.ConfigureFlags()

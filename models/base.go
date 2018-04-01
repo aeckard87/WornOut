@@ -17,72 +17,19 @@ import (
 
 type Base struct {
 
-	// category
-	Category *Category `json:"category,omitempty"`
-
-	// subcategory
-	Subcategory *SubCategory `json:"subcategory,omitempty"`
+	// subcategories
+	Subcategories SubCategories `json:"subcategories"`
 }
 
-/* polymorph Base category false */
-
-/* polymorph Base subcategory false */
+/* polymorph Base subcategories false */
 
 // Validate validates this base
 func (m *Base) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateCategory(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
-	if err := m.validateSubcategory(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Base) validateCategory(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Category) { // not required
-		return nil
-	}
-
-	if m.Category != nil {
-
-		if err := m.Category.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("category")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (m *Base) validateSubcategory(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Subcategory) { // not required
-		return nil
-	}
-
-	if m.Subcategory != nil {
-
-		if err := m.Subcategory.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("subcategory")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 

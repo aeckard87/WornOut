@@ -45,9 +45,6 @@ func NewWornOutAPI(spec *loads.Document) *WornOutAPI {
 		CategoriesCreateCategoryHandler: categories.CreateCategoryHandlerFunc(func(params categories.CreateCategoryParams) middleware.Responder {
 			return middleware.NotImplemented("operation CategoriesCreateCategory has not yet been implemented")
 		}),
-		DescriptorsCreateDescriptorHandler: descriptors.CreateDescriptorHandlerFunc(func(params descriptors.CreateDescriptorParams) middleware.Responder {
-			return middleware.NotImplemented("operation DescriptorsCreateDescriptor has not yet been implemented")
-		}),
 		DescriptorsCreateDescriptorByDetailHandler: descriptors.CreateDescriptorByDetailHandlerFunc(func(params descriptors.CreateDescriptorByDetailParams) middleware.Responder {
 			return middleware.NotImplemented("operation DescriptorsCreateDescriptorByDetail has not yet been implemented")
 		}),
@@ -199,8 +196,6 @@ type WornOutAPI struct {
 
 	// CategoriesCreateCategoryHandler sets the operation handler for the create category operation
 	CategoriesCreateCategoryHandler categories.CreateCategoryHandler
-	// DescriptorsCreateDescriptorHandler sets the operation handler for the create descriptor operation
-	DescriptorsCreateDescriptorHandler descriptors.CreateDescriptorHandler
 	// DescriptorsCreateDescriptorByDetailHandler sets the operation handler for the create descriptor by detail operation
 	DescriptorsCreateDescriptorByDetailHandler descriptors.CreateDescriptorByDetailHandler
 	// DetailsCreateDetailHandler sets the operation handler for the create detail operation
@@ -346,10 +341,6 @@ func (o *WornOutAPI) Validate() error {
 
 	if o.CategoriesCreateCategoryHandler == nil {
 		unregistered = append(unregistered, "categories.CreateCategoryHandler")
-	}
-
-	if o.DescriptorsCreateDescriptorHandler == nil {
-		unregistered = append(unregistered, "descriptors.CreateDescriptorHandler")
 	}
 
 	if o.DescriptorsCreateDescriptorByDetailHandler == nil {
@@ -610,11 +601,6 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/descriptors"] = descriptors.NewCreateDescriptor(o.context, o.DescriptorsCreateDescriptorHandler)
-
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
 	o.handlers["POST"]["/details/{id}/descriptors"] = descriptors.NewCreateDescriptorByDetail(o.context, o.DescriptorsCreateDescriptorByDetailHandler)
 
 	if o.handlers["POST"] == nil {
@@ -625,7 +611,7 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/items"] = items.NewCreateItem(o.context, o.ItemsCreateItemHandler)
+	o.handlers["POST"]["/users/{id}/items"] = items.NewCreateItem(o.context, o.ItemsCreateItemHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)

@@ -474,31 +474,6 @@ paths:
           description: Invalid input
         '404':
           description: No items found
-    post:
-      tags:
-        - Descriptors
-      summary: Create a  Descriptor
-      operationId: createDescriptor
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: a descriptor that will be updated
-          required: true
-          schema:
-            $ref: '#/definitions/Descriptor'
-      responses:
-        '201':
-          description: Descriptor Updated
-          schema:
-            $ref: '#/definitions/Descriptor'
-        '400':
-          description: Invalid input
-        '404':
-          description: No items found
     delete:
       tags:
         - Descriptors
@@ -805,28 +780,6 @@ paths:
             $ref: '#/definitions/Items'
         '404':
           description: No items found
-    post:
-      tags:
-        - Items
-      summary: Create an Item
-      operationId: createItem
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/Item'
-      responses:
-        '201':
-          description: Category Created
-          schema:
-            $ref: '#/definitions/Item'
-        '400':
-          description: Invalid input
     delete:
       tags:
         - Items
@@ -936,6 +889,33 @@ paths:
           description: Invalid input
         '404':
           description: No items found
+    post:
+      tags:
+        - Items
+      summary: Create an Item
+      operationId: createItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Owner's ID
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Item'
+      responses:
+        '201':
+          description: Category Created
+          schema:
+            $ref: '#/definitions/Item'
+        '400':
+          description: Invalid input
   
 definitions:
   Category:
@@ -967,24 +947,11 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/SubCategory'
-  Catalog:
-    type: object
-    properties:
-      category:
-        $ref: '#/definitions/Category'
-      subcategories:
-        $ref: '#/definitions/SubCategories'
-  Catalogs:
-    type: array
-    items:
-      $ref: '#/definitions/Catalog'
   Base:
     type: object
     properties:
-      category:
-        $ref: '#/definitions/Category'
-      subcategory:
-        $ref: '#/definitions/SubCategory'
+      subcategories:
+        $ref: '#/definitions/SubCategories'
   Detail:
     type: object
     properties:
@@ -1014,17 +981,6 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/Descriptor'
-  Description:
-    type: object
-    properties:
-      detail:
-        $ref: '#/definitions/Detail'
-      descriptors:
-        $ref: '#/definitions/Descriptors'
-  Descriptions:
-    type: array
-    items:
-      $ref: '#/definitions/Description'
   User:
     type: object
     properties:
@@ -1040,8 +996,6 @@ definitions:
         type: string
       items:
         $ref: '#/definitions/Items'
-      descriptions:
-        $ref: '#/definitions/Descriptions'
   Users:
     type: array
     items:
@@ -1059,9 +1013,9 @@ definitions:
         type: string
         example: Lilly Eckard
       base:
-        $ref: '#/definitions/Base'
+        $ref: '#/definitions/SubCategory'
       descriptions:
-        $ref: '#/definitions/Descriptions'
+        $ref: '#/definitions/Descriptors'
   Items:
     type: array
     items:

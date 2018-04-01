@@ -9,11 +9,18 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+	"strings"
+
+	"github.com/go-openapi/swag"
 )
 
 // CreateItemURL generates an URL for the create item operation
 type CreateItemURL struct {
+	ID int64
+
 	_basePath string
+	// avoid unkeyed usage
+	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
@@ -35,8 +42,14 @@ func (o *CreateItemURL) SetBasePath(bp string) {
 func (o *CreateItemURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/items"
+	var _path = "/users/{id}/items"
 
+	id := swag.FormatInt64(o.ID)
+	if id != "" {
+		_path = strings.Replace(_path, "{id}", id, -1)
+	} else {
+		return nil, errors.New("ID is required on CreateItemURL")
+	}
 	_basePath := o._basePath
 	if _basePath == "" {
 		_basePath = "/v1"

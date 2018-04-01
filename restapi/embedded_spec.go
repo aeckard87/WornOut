@@ -362,44 +362,6 @@ func init() {
           }
         }
       },
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Descriptors"
-        ],
-        "summary": "Create a  Descriptor",
-        "operationId": "createDescriptor",
-        "parameters": [
-          {
-            "description": "a descriptor that will be updated",
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Descriptor"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Descriptor Updated",
-            "schema": {
-              "$ref": "#/definitions/Descriptor"
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "404": {
-            "description": "No items found"
-          }
-        }
-      },
       "delete": {
         "consumes": [
           "application/json"
@@ -864,40 +826,6 @@ func init() {
           },
           "404": {
             "description": "No items found"
-          }
-        }
-      },
-      "post": {
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "Items"
-        ],
-        "summary": "Create an Item",
-        "operationId": "createItem",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Item"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Category Created",
-            "schema": {
-              "$ref": "#/definitions/Item"
-            }
-          },
-          "400": {
-            "description": "Invalid input"
           }
         }
       },
@@ -1422,6 +1350,47 @@ func init() {
             "description": "No items found"
           }
         }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Items"
+        ],
+        "summary": "Create an Item",
+        "operationId": "createItem",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Owner's ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Category Created",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          }
+        }
       }
     }
   },
@@ -1429,29 +1398,9 @@ func init() {
     "Base": {
       "type": "object",
       "properties": {
-        "category": {
-          "$ref": "#/definitions/Category"
-        },
-        "subcategory": {
-          "$ref": "#/definitions/SubCategory"
-        }
-      }
-    },
-    "Catalog": {
-      "type": "object",
-      "properties": {
-        "category": {
-          "$ref": "#/definitions/Category"
-        },
         "subcategories": {
           "$ref": "#/definitions/SubCategories"
         }
-      }
-    },
-    "Catalogs": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Catalog"
       }
     },
     "Categories": {
@@ -1471,23 +1420,6 @@ func init() {
           "type": "integer",
           "example": 10
         }
-      }
-    },
-    "Description": {
-      "type": "object",
-      "properties": {
-        "descriptors": {
-          "$ref": "#/definitions/Descriptors"
-        },
-        "detail": {
-          "$ref": "#/definitions/Detail"
-        }
-      }
-    },
-    "Descriptions": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Description"
       }
     },
     "Descriptor": {
@@ -1536,10 +1468,10 @@ func init() {
       "type": "object",
       "properties": {
         "base": {
-          "$ref": "#/definitions/Base"
+          "$ref": "#/definitions/SubCategory"
         },
         "descriptions": {
-          "$ref": "#/definitions/Descriptions"
+          "$ref": "#/definitions/Descriptors"
         },
         "id": {
           "type": "integer",
@@ -1587,9 +1519,6 @@ func init() {
     "User": {
       "type": "object",
       "properties": {
-        "descriptions": {
-          "$ref": "#/definitions/Descriptions"
-        },
         "email": {
           "type": "string"
         },

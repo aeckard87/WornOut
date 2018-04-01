@@ -24,7 +24,7 @@ type Descriptor struct {
 	DetailID int64 `gorm:"foreignkey:DetailID;not null" json:"detailId,omitempty"`
 
 	// id
-	ID int64 `json:"id,omitempty"`
+	ID int64 `gorm:"primary_key;auto_incement" json:"id,omitempty"`
 }
 
 /* polymorph Descriptor descriptor false */
