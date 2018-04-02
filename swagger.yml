@@ -947,11 +947,6 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/SubCategory'
-  Base:
-    type: object
-    properties:
-      subcategories:
-        $ref: '#/definitions/SubCategories'
   Detail:
     type: object
     properties:
@@ -994,8 +989,6 @@ definitions:
         type: string
       email:
         type: string
-      items:
-        $ref: '#/definitions/Items'
   Users:
     type: array
     items:
@@ -1009,11 +1002,12 @@ definitions:
       name:
         type: string
         example: Red Short Sleeve Top
-      owner:
-        type: string
-        example: Lilly Eckard
-      base:
-        $ref: '#/definitions/SubCategory'
+      userID:
+        type: integer
+        example: 40
+      subCategoryID:
+        type: integer
+        example: 40
       descriptions:
         $ref: '#/definitions/Descriptors'
   Items:

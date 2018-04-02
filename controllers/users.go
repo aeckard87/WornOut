@@ -1,104 +1,82 @@
 package controllers
 
 import (
-	"fmt"
-
 	dbpkg "github.com/aeckard87/WornOut/db"
 	model "github.com/aeckard87/WornOut/models"
-	"github.com/aeckard87/WornOut/restapi/operations/categories"
+	"github.com/aeckard87/WornOut/restapi/operations/users"
 )
 
-var count int
-
-func CreateCategory(params categories.CreateCategoryParams) model.Category {
+func CreateUser(params users.CreateUserParams) model.User {
 	db := dbpkg.Connect()
-
 	defer db.Close()
-
-	// fmt.Println("New Record for category", params.Category)
 
 	db.Create(&params.Body)
 
-	var category model.Category
+	var user model.User
 
-	db.Where("category = ?", params.Body.Category).Find(&category)
-	return category
+	db.Where("username = ?", params.Body.Username).Find(&user)
+	return user
 }
 
-func UpdateCategory(params categories.UpdateCategoryParams) model.Category {
+func UpdateUser(params users.UpdateUserParams) model.User {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Update Record to category", params.Body.Category)
+	var user model.User
 
-	var category model.Category
-
-	db.Model(&category).Where("id = ?", params.ID).Update("category", params.Body.Category)
-	// fmt.Println("UPDATED", category)
-	category.ID = params.ID
-	return category
+	db.Model(&user).Where("id = ?", params.ID).Updates(params.Body)
+	// fmt.Println("UPDATED", user)
+	user.ID = params.ID
+	return user
 
 }
 
-func DeleteCategory(params categories.DeleteCategoryParams) model.Category {
+func DeleteUser(params users.DeleteUserParams) model.User {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Delete Record ID", params.ID)
+	var user model.User
+	user.ID = params.ID
 
-	var category model.Category
-	category.ID = params.ID
+	db.Delete(&user)
 
-	db.Delete(&category)
-
-	return category
+	return user
 
 }
 
-func DeleteCategories(params categories.DeleteCategoriesParams) model.Category {
+func DeleteUsers(params users.DeleteUsersParams) model.User {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Delete Record ID", params.ID)
+	var user model.User
 
-	var category model.Category
+	db.Delete(&user)
 
-	db.Delete(&category)
-
-	return category
+	return user
 
 }
 
-func GetCategory(params categories.GetCategoryParams) model.Category {
+func GetUser(params users.GetUserParams) model.User {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	fmt.Println("Get Record ID", params.ID)
+	var user model.User
+	user.ID = params.ID
 
-	var category model.Category
-	category.ID = params.ID
+	db.First(&user)
 
-	db.First(&category)
-
-	return category
+	return user
 
 }
 
-func GetCategories(params categories.GetCategoriesParams) model.Categories {
+func GetUsers(params users.GetUsersParams) model.Users {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	fmt.Println("Get All Records")
+	var users model.Users
 
-	var categories model.Categories
+	db.Find(&users)
 
-	db.Find(&categories)
-
-	return categories
+	return users
 
 }

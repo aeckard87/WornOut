@@ -206,7 +206,7 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.DescriptorsGetDescriptorsByDetailHandler = descriptors.GetDescriptorsByDetailHandlerFunc(func(params descriptors.GetDescriptorsByDetailParams) middleware.Responder {
 		fetched := controller.GetDescriptorsByDetail(params)
-		if fetched[0].Descriptor == "" {
+		if len(fetched) == 0 {
 			return descriptors.NewGetDescriptorsByDetailNotFound()
 		}
 		return descriptors.NewGetDescriptorsByDetailOK().WithPayload(fetched)
@@ -215,23 +215,50 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 
 	//-------
 
+	//----USERS----
+	api.UsersCreateUserHandler = users.CreateUserHandlerFunc(func(params users.CreateUserParams) middleware.Responder {
+		created := controller.CreateUser(params)
+		if created.ID == 0 {
+			return users.NewCreateUserBadRequest()
+		}
+		return users.NewCreateUserCreated().WithPayload(&created)
+	})
+	api.UsersUpdateUserHandler = users.UpdateUserHandlerFunc(func(params users.UpdateUserParams) middleware.Responder {
+		updated := controller.UpdateUser(params)
+		return users.NewUpdateUserCreated().WithPayload(&updated)
+	})
+	api.UsersDeleteUserHandler = users.DeleteUserHandlerFunc(func(params users.DeleteUserParams) middleware.Responder {
+		_ = controller.DeleteUser(params)
+		return users.NewDeleteUserOK()
+	})
+	api.UsersDeleteUsersHandler = users.DeleteUsersHandlerFunc(func(params users.DeleteUsersParams) middleware.Responder {
+		_ = controller.DeleteUsers(params)
+		return users.NewDeleteUsersOK()
+	})
+	api.UsersGetUserHandler = users.GetUserHandlerFunc(func(params users.GetUserParams) middleware.Responder {
+		fetched := controller.GetUser(params)
+		if fetched.Username == "" {
+			return users.NewGetUserNotFound()
+		}
+		return users.NewGetUserOK().WithPayload(&fetched)
+	})
+	api.UsersGetUsersHandler = users.GetUsersHandlerFunc(func(params users.GetUsersParams) middleware.Responder {
+		fetched := controller.GetUsers(params)
+		if len(fetched) == 0 {
+			return users.NewGetUsersNotFound()
+		}
+		return users.NewGetUsersOK().WithPayload(fetched)
+	})
+	//--------
+
 	api.ItemsCreateItemHandler = items.CreateItemHandlerFunc(func(params items.CreateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.CreateItem has not yet been implemented")
-	})
-	api.UsersCreateUserHandler = users.CreateUserHandlerFunc(func(params users.CreateUserParams) middleware.Responder {
-		return middleware.NotImplemented("operation users.CreateUser has not yet been implemented")
 	})
 	api.ItemsDeleteItemHandler = items.DeleteItemHandlerFunc(func(params items.DeleteItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.DeleteItem has not yet been implemented")
 	})
 	api.ItemsDeleteItemsHandler = items.DeleteItemsHandlerFunc(func(params items.DeleteItemsParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.DeleteItems has not yet been implemented")
-	})
-	api.UsersDeleteUserHandler = users.DeleteUserHandlerFunc(func(params users.DeleteUserParams) middleware.Responder {
-		return middleware.NotImplemented("operation users.DeleteUser has not yet been implemented")
-	})
-	api.UsersDeleteUsersHandler = users.DeleteUsersHandlerFunc(func(params users.DeleteUsersParams) middleware.Responder {
-		return middleware.NotImplemented("operation users.DeleteUsers has not yet been implemented")
 	})
 	api.ItemsGetItemHandler = items.GetItemHandlerFunc(func(params items.GetItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.GetItem has not yet been implemented")
@@ -242,17 +269,8 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	api.ItemsGetItemsByOwnerHandler = items.GetItemsByOwnerHandlerFunc(func(params items.GetItemsByOwnerParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.GetItemsByOwner has not yet been implemented")
 	})
-	api.UsersGetUserHandler = users.GetUserHandlerFunc(func(params users.GetUserParams) middleware.Responder {
-		return middleware.NotImplemented("operation users.GetUser has not yet been implemented")
-	})
-	api.UsersGetUsersHandler = users.GetUsersHandlerFunc(func(params users.GetUsersParams) middleware.Responder {
-		return middleware.NotImplemented("operation users.GetUsers has not yet been implemented")
-	})
 	api.ItemsUpdateItemHandler = items.UpdateItemHandlerFunc(func(params items.UpdateItemParams) middleware.Responder {
 		return middleware.NotImplemented("operation items.UpdateItem has not yet been implemented")
-	})
-	api.UsersUpdateUserHandler = users.UpdateUserHandlerFunc(func(params users.UpdateUserParams) middleware.Responder {
-		return middleware.NotImplemented("operation users.UpdateUser has not yet been implemented")
 	})
 
 	api.ServerShutdown = func() {}

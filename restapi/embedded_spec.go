@@ -1395,14 +1395,6 @@ func init() {
     }
   },
   "definitions": {
-    "Base": {
-      "type": "object",
-      "properties": {
-        "subcategories": {
-          "$ref": "#/definitions/SubCategories"
-        }
-      }
-    },
     "Categories": {
       "type": "array",
       "items": {
@@ -1467,9 +1459,6 @@ func init() {
     "Item": {
       "type": "object",
       "properties": {
-        "base": {
-          "$ref": "#/definitions/SubCategory"
-        },
         "descriptions": {
           "$ref": "#/definitions/Descriptors"
         },
@@ -1481,9 +1470,13 @@ func init() {
           "type": "string",
           "example": "Red Short Sleeve Top"
         },
-        "owner": {
-          "type": "string",
-          "example": "Lilly Eckard"
+        "subCategoryID": {
+          "type": "integer",
+          "example": 40
+        },
+        "userID": {
+          "type": "integer",
+          "example": 40
         }
       }
     },
@@ -1527,9 +1520,6 @@ func init() {
         },
         "id": {
           "type": "integer"
-        },
-        "items": {
-          "$ref": "#/definitions/Items"
         },
         "lastName": {
           "type": "string"

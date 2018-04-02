@@ -17,23 +17,20 @@ import (
 
 type User struct {
 
-	// email
-	Email string `json:"email,omitempty"`
+	// id
+	ID int64 `json:"id,omitempty"`
+
+	// username
+	Username string `json:"username,omitempty"`
 
 	// first name
 	FirstName string `json:"firstName,omitempty"`
 
-	// id
-	ID int64 `gorm:"primary_key;AUTO_INCEMENT;not null" json:"id,omitempty"`
-
-	// items
-	Items Items `json:"items"`
-
 	// last name
 	LastName string `json:"lastName,omitempty"`
 
-	// username
-	Username string `json:"username,omitempty"`
+	// email
+	Email string `json:"email,omitempty"`
 }
 
 /* polymorph User email false */
@@ -41,8 +38,6 @@ type User struct {
 /* polymorph User firstName false */
 
 /* polymorph User id false */
-
-/* polymorph User items false */
 
 /* polymorph User lastName false */
 

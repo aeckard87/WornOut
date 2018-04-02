@@ -17,23 +17,21 @@ import (
 
 type Item struct {
 
-	// base
-	Base *SubCategory `json:"base,omitempty"`
-
-	// descriptions
-	Descriptions Descriptors `json:"descriptions"`
-
 	// id
 	ID int64 `json:"id,omitempty"`
 
 	// name
 	Name string `json:"name,omitempty"`
 
-	// owner
-	Owner string `json:"owner,omitempty"`
-}
+	// sub category ID
+	SubCategoryID int64 `json:"subCategoryID,omitempty"`
 
-/* polymorph Item base false */
+	// descriptions
+	Descriptions Descriptors `json:"descriptions"`
+
+	// user ID
+	UserID int64 `json:"userID,omitempty"`
+}
 
 /* polymorph Item descriptions false */
 
@@ -41,39 +39,17 @@ type Item struct {
 
 /* polymorph Item name false */
 
-/* polymorph Item owner false */
+/* polymorph Item subCategoryID false */
+
+/* polymorph Item userID false */
 
 // Validate validates this item
 func (m *Item) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateBase(formats); err != nil {
-		// prop
-		res = append(res, err)
-	}
-
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Item) validateBase(formats strfmt.Registry) error {
-
-	if swag.IsZero(m.Base) { // not required
-		return nil
-	}
-
-	if m.Base != nil {
-
-		if err := m.Base.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("base")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 
