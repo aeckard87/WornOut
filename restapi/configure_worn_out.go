@@ -280,8 +280,8 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.ItemsGetItemHandler = items.GetItemHandlerFunc(func(params items.GetItemParams) middleware.Responder {
 		fetched := controller.GetItem(params)
-		if len(fetched) == 0 {
-			return items.NewGetItemNotFound()
+		if fetched.Name == "" {
+			return items.NewGetItemsByOwnerNotFound()
 		}
 		return items.NewGetItemOK().WithPayload(fetched)
 	})

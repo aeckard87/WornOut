@@ -9,6 +9,10 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/items"
 )
 
+type Descriptions struct {
+	Descriptors []*model.Descriptors
+}
+
 func CreateItem(params items.CreateItemParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -19,26 +23,43 @@ func CreateItem(params items.CreateItemParams) model.Item {
 	}
 	fmt.Println(string(descriptions))
 	db.Exec("INSERT INTO items (name,sub_category_id,descriptions,user_id) VALUES (?,?,?,?)", params.Body.Name, params.Body.SubCategoryID, string(descriptions), params.Body.UserID)
-	// db.Create(params.Body)
 
+	item := GetItemByName(params.Body.Name)
+
+	return item
+}
+
+func GetItemByName(name string) model.Item {
+	db := dbpkg.Connect()
+	defer db.Close()
 	var item model.Item
-	// var descriptors model.Descriptors
-	var test []byte
 
-	// db.Where("name = ?", params.Body.Name).Find(&item)
-	db.Raw("SELECT id, name, sub_category_id,user_id FROM items WHERE name = ?", params.Body.Name).Scan(&item)
-	db.Raw("SELECT descriptions FROM items WHERE name = ?", params.Body.Name).Scan(&test)
-	fmt.Println(test)
-	// b := json.Unmarshal(test, &item.Descriptions)
-	// fmt.Println("b", b)
-
-	// item.Descriptions = descriptors
-
-	// b, err := json.Marshal(item)
+	//This Gets everything BUT descriptions
+	db.Where("name = ?", name).Find(&item)
+	db.Select("user_id").Table("items").Where("name = ?", name).Scan(&item)
+	// db.DB().QueryRow("SELECT * FROM items WHERE name = ?", name).Scan(&item.ID, &item.Name, &item.SubCategoryID, &item.UserID, &item.Descriptions)
+	// a, err := json.Marshal(item)
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
-	// fmt.Println("Item:", string(b))
+	// fmt.Println("Item:\t", string(a))
+
+	// This properly gets descriptions!
+
+	var blob string
+	db.DB().QueryRow("SELECT descriptions FROM items WHERE name = ?", name).Scan(&blob)
+	// fmt.Println(blob)
+	err := json.Unmarshal([]byte(blob), &item.Descriptions)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//Marshal
+	// b, err := json.Marshal(item.Descriptions)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Println("Descriptors:\t", string(b))
 
 	return item
 }
@@ -104,13 +125,23 @@ func DeleteItemsBySubCategory(params items.DeleteItemsBySubCategoryParams) model
 
 }
 
-func GetItem(params items.GetItemParams) model.Items {
+func GetItem(params items.GetItemParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
+	var item model.Item
 
-	var item model.Items
+	//This Gets everything BUT descriptions
+	db.Where("id = ?", params.ID).Find(&item)
+	db.Select("user_id").Table("items").Where("id = ?", params.ID).Scan(&item)
 
-	db.Where("id=?", params.ID).Find(&item)
+	// This properly gets descriptions!
+	var blob string
+	db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", params.ID).Scan(&blob)
+	// fmt.Println(blob)
+	err := json.Unmarshal([]byte(blob), &item.Descriptions)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	return item
 
