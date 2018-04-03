@@ -87,6 +87,12 @@ func NewWornOutAPI(spec *loads.Document) *WornOutAPI {
 		ItemsDeleteItemsHandler: items.DeleteItemsHandlerFunc(func(params items.DeleteItemsParams) middleware.Responder {
 			return middleware.NotImplemented("operation ItemsDeleteItems has not yet been implemented")
 		}),
+		ItemsDeleteItemsByOwnerHandler: items.DeleteItemsByOwnerHandlerFunc(func(params items.DeleteItemsByOwnerParams) middleware.Responder {
+			return middleware.NotImplemented("operation ItemsDeleteItemsByOwner has not yet been implemented")
+		}),
+		ItemsDeleteItemsBySubCategoryHandler: items.DeleteItemsBySubCategoryHandlerFunc(func(params items.DeleteItemsBySubCategoryParams) middleware.Responder {
+			return middleware.NotImplemented("operation ItemsDeleteItemsBySubCategory has not yet been implemented")
+		}),
 		SubcategoriesDeleteSubCategoriesHandler: subcategories.DeleteSubCategoriesHandlerFunc(func(params subcategories.DeleteSubCategoriesParams) middleware.Responder {
 			return middleware.NotImplemented("operation SubcategoriesDeleteSubCategories has not yet been implemented")
 		}),
@@ -131,6 +137,9 @@ func NewWornOutAPI(spec *loads.Document) *WornOutAPI {
 		}),
 		ItemsGetItemsByOwnerHandler: items.GetItemsByOwnerHandlerFunc(func(params items.GetItemsByOwnerParams) middleware.Responder {
 			return middleware.NotImplemented("operation ItemsGetItemsByOwner has not yet been implemented")
+		}),
+		ItemsGetItemsBySubCategoryHandler: items.GetItemsBySubCategoryHandlerFunc(func(params items.GetItemsBySubCategoryParams) middleware.Responder {
+			return middleware.NotImplemented("operation ItemsGetItemsBySubCategory has not yet been implemented")
 		}),
 		SubcategoriesGetSubCategoriesHandler: subcategories.GetSubCategoriesHandlerFunc(func(params subcategories.GetSubCategoriesParams) middleware.Responder {
 			return middleware.NotImplemented("operation SubcategoriesGetSubCategories has not yet been implemented")
@@ -224,6 +233,10 @@ type WornOutAPI struct {
 	ItemsDeleteItemHandler items.DeleteItemHandler
 	// ItemsDeleteItemsHandler sets the operation handler for the delete items operation
 	ItemsDeleteItemsHandler items.DeleteItemsHandler
+	// ItemsDeleteItemsByOwnerHandler sets the operation handler for the delete items by owner operation
+	ItemsDeleteItemsByOwnerHandler items.DeleteItemsByOwnerHandler
+	// ItemsDeleteItemsBySubCategoryHandler sets the operation handler for the delete items by sub category operation
+	ItemsDeleteItemsBySubCategoryHandler items.DeleteItemsBySubCategoryHandler
 	// SubcategoriesDeleteSubCategoriesHandler sets the operation handler for the delete sub categories operation
 	SubcategoriesDeleteSubCategoriesHandler subcategories.DeleteSubCategoriesHandler
 	// SubcategoriesDeleteSubCategoriesByCategoryHandler sets the operation handler for the delete sub categories by category operation
@@ -254,6 +267,8 @@ type WornOutAPI struct {
 	ItemsGetItemsHandler items.GetItemsHandler
 	// ItemsGetItemsByOwnerHandler sets the operation handler for the get items by owner operation
 	ItemsGetItemsByOwnerHandler items.GetItemsByOwnerHandler
+	// ItemsGetItemsBySubCategoryHandler sets the operation handler for the get items by sub category operation
+	ItemsGetItemsBySubCategoryHandler items.GetItemsBySubCategoryHandler
 	// SubcategoriesGetSubCategoriesHandler sets the operation handler for the get sub categories operation
 	SubcategoriesGetSubCategoriesHandler subcategories.GetSubCategoriesHandler
 	// SubcategoriesGetSubCategoriesByCategoryHandler sets the operation handler for the get sub categories by category operation
@@ -399,6 +414,14 @@ func (o *WornOutAPI) Validate() error {
 		unregistered = append(unregistered, "items.DeleteItemsHandler")
 	}
 
+	if o.ItemsDeleteItemsByOwnerHandler == nil {
+		unregistered = append(unregistered, "items.DeleteItemsByOwnerHandler")
+	}
+
+	if o.ItemsDeleteItemsBySubCategoryHandler == nil {
+		unregistered = append(unregistered, "items.DeleteItemsBySubCategoryHandler")
+	}
+
 	if o.SubcategoriesDeleteSubCategoriesHandler == nil {
 		unregistered = append(unregistered, "subcategories.DeleteSubCategoriesHandler")
 	}
@@ -457,6 +480,10 @@ func (o *WornOutAPI) Validate() error {
 
 	if o.ItemsGetItemsByOwnerHandler == nil {
 		unregistered = append(unregistered, "items.GetItemsByOwnerHandler")
+	}
+
+	if o.ItemsGetItemsBySubCategoryHandler == nil {
+		unregistered = append(unregistered, "items.GetItemsBySubCategoryHandler")
 	}
 
 	if o.SubcategoriesGetSubCategoriesHandler == nil {
@@ -671,6 +698,16 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
+	o.handlers["DELETE"]["/users/{id}/items"] = items.NewDeleteItemsByOwner(o.context, o.ItemsDeleteItemsByOwnerHandler)
+
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/subcategories/{id}/items"] = items.NewDeleteItemsBySubCategory(o.context, o.ItemsDeleteItemsBySubCategoryHandler)
+
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
 	o.handlers["DELETE"]["/subcategories"] = subcategories.NewDeleteSubCategories(o.context, o.SubcategoriesDeleteSubCategoriesHandler)
 
 	if o.handlers["DELETE"] == nil {
@@ -742,6 +779,11 @@ func (o *WornOutAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/users/{id}/items"] = items.NewGetItemsByOwner(o.context, o.ItemsGetItemsByOwnerHandler)
+
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/subcategories/{id}/items"] = items.NewGetItemsBySubCategory(o.context, o.ItemsGetItemsBySubCategoryHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

@@ -916,6 +916,71 @@ paths:
             $ref: '#/definitions/Item'
         '400':
           description: Invalid input
+    delete:
+      tags:
+        - Items
+      summary: Delete an Item
+      operationId: deleteItemsByOwner
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: Item ID
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
+  '/subcategories/{id}/items':
+    get:
+      tags:
+        - Items
+      summary: Get all Items by Subcategory
+      operationId: getItemsBySubCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: SubCategory ID
+      responses:
+        '200':
+          description: Status Ok
+          schema:
+            $ref: '#/definitions/Items'
+        '400':
+          description: Invalid input
+        '404':
+          description: No items found
+    delete:
+      tags:
+        - Items
+      summary: Delete an Item
+      operationId: deleteItemsBySubCategory
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+          description: SubCategory ID
+      responses:
+        '200':
+          description: Status Ok
+        '404':
+          description: No items found
   
 definitions:
   Category:

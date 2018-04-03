@@ -17,6 +17,9 @@ import (
 
 type Item struct {
 
+	// descriptions
+	Descriptions Descriptors `json:"descriptions"`
+
 	// id
 	ID int64 `json:"id,omitempty"`
 
@@ -25,9 +28,6 @@ type Item struct {
 
 	// sub category ID
 	SubCategoryID int64 `json:"subCategoryID,omitempty"`
-
-	// descriptions
-	Descriptions Descriptors `json:"descriptions"`
 
 	// user ID
 	UserID int64 `json:"userID,omitempty"`

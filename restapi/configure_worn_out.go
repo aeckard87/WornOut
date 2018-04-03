@@ -252,25 +252,59 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	//--------
 
 	api.ItemsCreateItemHandler = items.CreateItemHandlerFunc(func(params items.CreateItemParams) middleware.Responder {
-		return middleware.NotImplemented("operation items.CreateItem has not yet been implemented")
-	})
-	api.ItemsDeleteItemHandler = items.DeleteItemHandlerFunc(func(params items.DeleteItemParams) middleware.Responder {
-		return middleware.NotImplemented("operation items.DeleteItem has not yet been implemented")
-	})
-	api.ItemsDeleteItemsHandler = items.DeleteItemsHandlerFunc(func(params items.DeleteItemsParams) middleware.Responder {
-		return middleware.NotImplemented("operation items.DeleteItems has not yet been implemented")
-	})
-	api.ItemsGetItemHandler = items.GetItemHandlerFunc(func(params items.GetItemParams) middleware.Responder {
-		return middleware.NotImplemented("operation items.GetItem has not yet been implemented")
-	})
-	api.ItemsGetItemsHandler = items.GetItemsHandlerFunc(func(params items.GetItemsParams) middleware.Responder {
-		return middleware.NotImplemented("operation items.GetItems has not yet been implemented")
-	})
-	api.ItemsGetItemsByOwnerHandler = items.GetItemsByOwnerHandlerFunc(func(params items.GetItemsByOwnerParams) middleware.Responder {
-		return middleware.NotImplemented("operation items.GetItemsByOwner has not yet been implemented")
+		created := controller.CreateItem(params)
+		if created.ID == 0 {
+			return items.NewCreateItemBadRequest()
+		}
+		return items.NewCreateItemCreated().WithPayload(&created)
 	})
 	api.ItemsUpdateItemHandler = items.UpdateItemHandlerFunc(func(params items.UpdateItemParams) middleware.Responder {
-		return middleware.NotImplemented("operation items.UpdateItem has not yet been implemented")
+		updated := controller.UpdateItem(params)
+		return items.NewUpdateItemCreated().WithPayload(&updated)
+	})
+	api.ItemsDeleteItemHandler = items.DeleteItemHandlerFunc(func(params items.DeleteItemParams) middleware.Responder {
+		_ = controller.DeleteItem(params)
+		return items.NewDeleteItemOK()
+	})
+	api.ItemsDeleteItemsHandler = items.DeleteItemsHandlerFunc(func(params items.DeleteItemsParams) middleware.Responder {
+		_ = controller.DeleteItems(params)
+		return items.NewDeleteItemsOK()
+	})
+	api.ItemsDeleteItemsByOwnerHandler = items.DeleteItemsByOwnerHandlerFunc(func(params items.DeleteItemsByOwnerParams) middleware.Responder {
+		_ = controller.DeleteItemsByOwner(params)
+		return items.NewDeleteItemsByOwnerOK()
+	})
+	api.ItemsDeleteItemsBySubCategoryHandler = items.DeleteItemsBySubCategoryHandlerFunc(func(params items.DeleteItemsBySubCategoryParams) middleware.Responder {
+		_ = controller.DeleteItemsBySubCategory(params)
+		return items.NewDeleteItemsBySubCategoryOK()
+	})
+	api.ItemsGetItemHandler = items.GetItemHandlerFunc(func(params items.GetItemParams) middleware.Responder {
+		fetched := controller.GetItem(params)
+		if len(fetched) == 0 {
+			return items.NewGetItemNotFound()
+		}
+		return items.NewGetItemOK().WithPayload(fetched)
+	})
+	api.ItemsGetItemsHandler = items.GetItemsHandlerFunc(func(params items.GetItemsParams) middleware.Responder {
+		fetched := controller.GetItems(params)
+		if len(fetched) == 0 {
+			return items.NewGetItemsNotFound()
+		}
+		return items.NewGetItemsOK().WithPayload(fetched)
+	})
+	api.ItemsGetItemsByOwnerHandler = items.GetItemsByOwnerHandlerFunc(func(params items.GetItemsByOwnerParams) middleware.Responder {
+		fetched := controller.GetItemsByOwner(params)
+		if len(fetched) == 0 {
+			return items.NewGetItemsByOwnerNotFound()
+		}
+		return items.NewGetItemsByOwnerOK().WithPayload(fetched)
+	})
+	api.ItemsGetItemsBySubCategoryHandler = items.GetItemsBySubCategoryHandlerFunc(func(params items.GetItemsBySubCategoryParams) middleware.Responder {
+		fetched := controller.GetItemsBySubCategory(params)
+		if len(fetched) == 0 {
+			return items.NewGetItemsBySubCategoryNotFound()
+		}
+		return items.NewGetItemsBySubCategoryOK().WithPayload(fetched)
 	})
 
 	api.ServerShutdown = func() {}

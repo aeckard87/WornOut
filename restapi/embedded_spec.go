@@ -1119,6 +1119,74 @@ func init() {
         }
       }
     },
+    "/subcategories/{id}/items": {
+      "get": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Items"
+        ],
+        "summary": "Get all Items by Subcategory",
+        "operationId": "getItemsBySubCategory",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "SubCategory ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status Ok",
+            "schema": {
+              "$ref": "#/definitions/Items"
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "404": {
+            "description": "No items found"
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Items"
+        ],
+        "summary": "Delete an Item",
+        "operationId": "deleteItemsBySubCategory",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "SubCategory ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status Ok"
+          },
+          "404": {
+            "description": "No items found"
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "consumes": [
@@ -1389,6 +1457,36 @@ func init() {
           },
           "400": {
             "description": "Invalid input"
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "Items"
+        ],
+        "summary": "Delete an Item",
+        "operationId": "deleteItemsByOwner",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Item ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status Ok"
+          },
+          "404": {
+            "description": "No items found"
           }
         }
       }

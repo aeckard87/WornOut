@@ -54,7 +54,7 @@ func NewGetItemOK() *GetItemOK {
 Status Ok
 */
 type GetItemOK struct {
-	Payload models.Items
+	Payload models.Item
 }
 
 func (o *GetItemOK) Error() string {
