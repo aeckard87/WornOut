@@ -107,7 +107,7 @@ func DeleteItemsByOwner(params items.DeleteItemsByOwnerParams) model.Item {
 
 	var item model.Item
 
-	db.Where("owner_id=?", params.ID).Delete(&item)
+	db.Where("user_id=?", params.ID).Delete(&item)
 
 	return item
 
@@ -154,6 +154,18 @@ func GetItems(params items.GetItemsParams) model.Items {
 	var items model.Items
 
 	db.Find(&items)
+	for _, item := range items {
+		db.Select("user_id").Table("items").Where("id = ?", item.ID).Scan(&item)
+
+		// This properly gets descriptions!
+		var blob string
+		db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", item.ID).Scan(&blob)
+		// fmt.Println(blob)
+		err := json.Unmarshal([]byte(blob), &item.Descriptions)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 
 	return items
 
@@ -165,7 +177,19 @@ func GetItemsByOwner(params items.GetItemsByOwnerParams) model.Items {
 
 	var items model.Items
 
-	db.Where("owner_id=?", params.ID).Find(&items)
+	db.Where("user_id=?", params.ID).Find(&items)
+	for _, item := range items {
+		db.Select("user_id").Table("items").Where("id = ?", item.ID).Scan(&item)
+
+		// This properly gets descriptions!
+		var blob string
+		db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", item.ID).Scan(&blob)
+		// fmt.Println(blob)
+		err := json.Unmarshal([]byte(blob), &item.Descriptions)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 
 	return items
 
@@ -178,6 +202,18 @@ func GetItemsBySubCategory(params items.GetItemsBySubCategoryParams) model.Items
 	var items model.Items
 
 	db.Where("sub_category_id=?", params.ID).Find(&items)
+	for _, item := range items {
+		db.Select("user_id").Table("items").Where("id = ?", item.ID).Scan(&item)
+
+		// This properly gets descriptions!
+		var blob string
+		db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", item.ID).Scan(&blob)
+		// fmt.Println(blob)
+		err := json.Unmarshal([]byte(blob), &item.Descriptions)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 
 	return items
 
