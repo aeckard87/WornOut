@@ -25,7 +25,7 @@ type GetItemOK struct {
 	/*
 	  In: Body
 	*/
-	Payload models.Items `json:"body,omitempty"`
+	Payload *models.Item `json:"body,omitempty"`
 }
 
 // NewGetItemOK creates GetItemOK with default headers values
@@ -34,13 +34,13 @@ func NewGetItemOK() *GetItemOK {
 }
 
 // WithPayload adds the payload to the get item o k response
-func (o *GetItemOK) WithPayload(payload models.Items) *GetItemOK {
+func (o *GetItemOK) WithPayload(payload *models.Item) *GetItemOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get item o k response
-func (o *GetItemOK) SetPayload(payload models.Items) {
+func (o *GetItemOK) SetPayload(payload *models.Item) {
 	o.Payload = payload
 }
 
@@ -48,15 +48,12 @@ func (o *GetItemOK) SetPayload(payload models.Items) {
 func (o *GetItemOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(200)
-	payload := o.Payload
-	if payload == nil {
-		payload = make(models.Items, 0, 50)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
 	}
-
-	if err := producer.Produce(rw, payload); err != nil {
-		panic(err) // let the recovery middleware deal with this
-	}
-
 }
 
 // GetItemNotFoundCode is the HTTP code returned for type GetItemNotFound
@@ -79,3 +76,18 @@ func (o *GetItemNotFound) WriteResponse(rw http.ResponseWriter, producer runtime
 
 	rw.WriteHeader(404)
 }
+
+// WriteResponse to the client
+// func (o *GetItemOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+// 	rw.WriteHeader(200)
+// 	payload := o.Payload
+// 	if payload == nil {
+// 		payload = make(models.Items, 0, 50)
+// 	}
+
+// 	if err := producer.Produce(rw, payload); err != nil {
+// 		panic(err) // let the recovery middleware deal with this
+// 	}
+
+// }

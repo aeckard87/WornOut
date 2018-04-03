@@ -283,7 +283,7 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 		if fetched.Name == "" {
 			return items.NewGetItemsByOwnerNotFound()
 		}
-		return items.NewGetItemOK().WithPayload(fetched)
+		return items.NewGetItemOK().WithPayload(&fetched)
 	})
 	api.ItemsGetItemsHandler = items.GetItemsHandlerFunc(func(params items.GetItemsParams) middleware.Responder {
 		fetched := controller.GetItems(params)
