@@ -10,7 +10,7 @@ import (
 
 var count int
 
-//CreateCategory
+// CreateCategory
 func CreateCategory(params categories.CreateCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
