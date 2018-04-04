@@ -10,7 +10,7 @@ import (
 
 var count int
 
-// CreateCategory
+//CreateCategory...
 func CreateCategory(params categories.CreateCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -26,7 +26,7 @@ func CreateCategory(params categories.CreateCategoryParams) model.Category {
 	return category
 }
 
-//UpdateCategory
+//UpdateCategory...
 func UpdateCategory(params categories.UpdateCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -43,7 +43,7 @@ func UpdateCategory(params categories.UpdateCategoryParams) model.Category {
 
 }
 
-//DeleteCategory
+//DeleteCategory...
 func DeleteCategory(params categories.DeleteCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -60,7 +60,7 @@ func DeleteCategory(params categories.DeleteCategoryParams) model.Category {
 
 }
 
-//DeleteCategories
+//DeleteCategories...
 func DeleteCategories(params categories.DeleteCategoriesParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -76,7 +76,7 @@ func DeleteCategories(params categories.DeleteCategoriesParams) model.Category {
 
 }
 
-//GetCategory
+//GetCategory...
 func GetCategory(params categories.GetCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -93,7 +93,7 @@ func GetCategory(params categories.GetCategoryParams) model.Category {
 
 }
 
-//GetCategories
+//GetCategories...
 func GetCategories(params categories.GetCategoriesParams) model.Categories {
 	db := dbpkg.Connect()
 
