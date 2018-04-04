@@ -11,9 +11,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	// setting up mysql conn with gorm
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
+// Connect returns *gorm.DB connection
 func Connect() *gorm.DB {
 	dbURL := getConnectionString()
 	if dbURL == "" {
@@ -40,10 +42,12 @@ func Connect() *gorm.DB {
 	return db
 }
 
+// DBInstance returns *gorm.DB instance
 func DBInstance(c *gin.Context) *gorm.DB {
 	return c.MustGet("DB").(*gorm.DB)
 }
 
+// SetPreloads returns *gorm.DB preloads
 func (self *Parameter) SetPreloads(db *gorm.DB) *gorm.DB {
 	if self.Preloads == "" {
 		return db

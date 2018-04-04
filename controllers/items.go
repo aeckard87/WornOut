@@ -9,6 +9,7 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/items"
 )
 
+// Descriptions struct type
 type Descriptions struct {
 	Descriptors []*model.Descriptors
 }

@@ -100,7 +100,7 @@ func GetSubCategory(params subcategories.GetSubCategoryParams) model.SubCategory
 
 }
 
-// GetSubCategoriesByCategory returns SubCategories given Category.ID
+// GetSubcategoriesByCategory returns SubCategories given Category.ID
 func GetSubcategoriesByCategory(params subcategories.GetSubCategoriesByCategoryParams) model.SubCategories {
 	fmt.Println("GetSubCategoriesByCategory")
 	db := dbpkg.Connect()

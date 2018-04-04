@@ -13,6 +13,7 @@ const (
 	defaultOrder = "desc"
 )
 
+// Parameter struct
 type Parameter struct {
 	Filters  map[string]string
 	Preloads string
@@ -24,6 +25,7 @@ type Parameter struct {
 	IsLastID bool
 }
 
+// NewParameter returns *Parameter or error
 func NewParameter(c *gin.Context, model interface{}) (*Parameter, error) {
 	parameter := &Parameter{}
 
@@ -34,34 +36,34 @@ func NewParameter(c *gin.Context, model interface{}) (*Parameter, error) {
 	return parameter, nil
 }
 
-func (self *Parameter) initialize(c *gin.Context, model interface{}) error {
-	self.Filters = filterToMap(c, model)
-	self.Preloads = c.Query("preloads")
-	self.Sort = c.Query("sort")
+func (par *Parameter) initialize(c *gin.Context, model interface{}) error {
+	par.Filters = filterToMap(c, model)
+	par.Preloads = c.Query("preloads")
+	par.Sort = c.Query("sort")
 
 	limit, err := validate(c.DefaultQuery("limit", defaultLimit))
 	if err != nil {
 		return err
 	}
 
-	self.Limit = int(math.Max(1, math.Min(10000, float64(limit))))
+	par.Limit = int(math.Max(1, math.Min(10000, float64(limit))))
 	page, err := validate(c.DefaultQuery("page", defaultPage))
 	if err != nil {
 		return err
 	}
 
-	self.Page = int(math.Max(1, float64(page)))
+	par.Page = int(math.Max(1, float64(page)))
 	lastID, err := validate(c.Query("last_id"))
 	if err != nil {
 		return err
 	}
 
 	if lastID != -1 {
-		self.IsLastID = true
-		self.LastID = int(math.Max(0, float64(lastID)))
+		par.IsLastID = true
+		par.LastID = int(math.Max(0, float64(lastID)))
 	}
 
-	self.Order = c.DefaultQuery("order", defaultOrder)
+	par.Order = c.DefaultQuery("order", defaultOrder)
 	return nil
 }
 
