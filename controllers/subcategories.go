@@ -8,6 +8,7 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/subcategories"
 )
 
+// CreateSubCategoryByCategory returns SubCategory
 func CreateSubCategoryByCategory(params subcategories.CreateSubCategoryByCategoryParams) model.SubCategory {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -21,6 +22,7 @@ func CreateSubCategoryByCategory(params subcategories.CreateSubCategoryByCategor
 	return sc
 }
 
+// UpdateSubCategory returns Subcategory
 func UpdateSubCategory(params subcategories.UpdateSubCategoryParams) model.SubCategory {
 	fmt.Println("Update Subcateogry")
 	db := dbpkg.Connect()
@@ -35,6 +37,7 @@ func UpdateSubCategory(params subcategories.UpdateSubCategoryParams) model.SubCa
 
 }
 
+// DeleteSubCategory returns empty SubCategory
 func DeleteSubCategory(params subcategories.DeleteSubCategoryParams) model.SubCategory {
 	fmt.Println("Delete Subcateogry")
 	db := dbpkg.Connect()
@@ -49,6 +52,7 @@ func DeleteSubCategory(params subcategories.DeleteSubCategoryParams) model.SubCa
 
 }
 
+// DeleteSubcategoriesByCategory returns empty SubCategory given Category.ID
 func DeleteSubcategoriesByCategory(params subcategories.DeleteSubCategoriesByCategoryParams) model.SubCategory {
 	fmt.Println("Delete Subcateogry by Category")
 	db := dbpkg.Connect()
@@ -65,6 +69,7 @@ func DeleteSubcategoriesByCategory(params subcategories.DeleteSubCategoriesByCat
 
 }
 
+// DeleteSubCategories returns empty SubCategory
 func DeleteSubCategories(params subcategories.DeleteSubCategoriesParams) model.SubCategory {
 	fmt.Println("Delete Subcateogries")
 	db := dbpkg.Connect()
@@ -80,6 +85,8 @@ func DeleteSubCategories(params subcategories.DeleteSubCategoriesParams) model.S
 	return sc
 
 }
+
+// GetSubCategory returns SubCategory given SubCategory.ID
 func GetSubCategory(params subcategories.GetSubCategoryParams) model.SubCategory {
 	fmt.Println("GetSubCategory")
 	db := dbpkg.Connect()
@@ -93,6 +100,7 @@ func GetSubCategory(params subcategories.GetSubCategoryParams) model.SubCategory
 
 }
 
+// GetSubCategoriesByCategory returns SubCategories given Category.ID
 func GetSubcategoriesByCategory(params subcategories.GetSubCategoriesByCategoryParams) model.SubCategories {
 	fmt.Println("GetSubCategoriesByCategory")
 	db := dbpkg.Connect()
@@ -105,6 +113,7 @@ func GetSubcategoriesByCategory(params subcategories.GetSubCategoriesByCategoryP
 	return sc
 }
 
+// GetSubcategories returns SubCategories
 func GetSubcategories(params subcategories.GetSubCategoriesParams) model.SubCategories {
 	fmt.Println("GetSubCategories")
 	db := dbpkg.Connect()

@@ -6,6 +6,7 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/users"
 )
 
+// CreateUser returns User
 func CreateUser(params users.CreateUserParams) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -18,6 +19,7 @@ func CreateUser(params users.CreateUserParams) model.User {
 	return user
 }
 
+// UpdateUser returns User
 func UpdateUser(params users.UpdateUserParams) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -31,6 +33,7 @@ func UpdateUser(params users.UpdateUserParams) model.User {
 
 }
 
+// DeleteUser returns empty User
 func DeleteUser(params users.DeleteUserParams) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -44,6 +47,7 @@ func DeleteUser(params users.DeleteUserParams) model.User {
 
 }
 
+// DeleteUsers returns empty User
 func DeleteUsers(params users.DeleteUsersParams) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -56,6 +60,7 @@ func DeleteUsers(params users.DeleteUsersParams) model.User {
 
 }
 
+// GetUser returns User given User.ID
 func GetUser(params users.GetUserParams) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -69,6 +74,7 @@ func GetUser(params users.GetUserParams) model.User {
 
 }
 
+// GetUsers returns Users
 func GetUsers(params users.GetUsersParams) model.Users {
 	db := dbpkg.Connect()
 	defer db.Close()

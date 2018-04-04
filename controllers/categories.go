@@ -8,7 +8,7 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/categories"
 )
 
-// CreateCategory returns the value of Category or empty if not saved.
+// CreateCategory returns created result of type Category.
 func CreateCategory(params categories.CreateCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -24,7 +24,7 @@ func CreateCategory(params categories.CreateCategoryParams) model.Category {
 	return category
 }
 
-// UpdateCategory
+// UpdateCategory returns updated result of type Category.
 func UpdateCategory(params categories.UpdateCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -41,7 +41,7 @@ func UpdateCategory(params categories.UpdateCategoryParams) model.Category {
 
 }
 
-// DeleteCategory
+// DeleteCategory returns empty result of type Category.
 func DeleteCategory(params categories.DeleteCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -58,7 +58,7 @@ func DeleteCategory(params categories.DeleteCategoryParams) model.Category {
 
 }
 
-// DeleteCategories
+// DeleteCategories returns empty result of type Categories
 func DeleteCategories(params categories.DeleteCategoriesParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -74,7 +74,7 @@ func DeleteCategories(params categories.DeleteCategoriesParams) model.Category {
 
 }
 
-// GetCategory
+// GetCategory returns a Category.
 func GetCategory(params categories.GetCategoryParams) model.Category {
 	db := dbpkg.Connect()
 
@@ -91,7 +91,7 @@ func GetCategory(params categories.GetCategoryParams) model.Category {
 
 }
 
-// GetCategories
+// GetCategories returns Categories.
 func GetCategories(params categories.GetCategoriesParams) model.Categories {
 	db := dbpkg.Connect()
 

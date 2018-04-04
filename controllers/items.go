@@ -13,6 +13,7 @@ type Descriptions struct {
 	Descriptors []*model.Descriptors
 }
 
+// CreateItem returns Item
 func CreateItem(params items.CreateItemParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -29,6 +30,7 @@ func CreateItem(params items.CreateItemParams) model.Item {
 	return item
 }
 
+// GetItemByName returns Item given Item.Name
 func GetItemByName(name string) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -64,6 +66,7 @@ func GetItemByName(name string) model.Item {
 	return item
 }
 
+// UpdateItem returns Item
 func UpdateItem(params items.UpdateItemParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -77,6 +80,7 @@ func UpdateItem(params items.UpdateItemParams) model.Item {
 
 }
 
+// DeleteItem returns empty Item
 func DeleteItem(params items.DeleteItemParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -89,6 +93,7 @@ func DeleteItem(params items.DeleteItemParams) model.Item {
 
 }
 
+// DeleteItems returns empty Item
 func DeleteItems(params items.DeleteItemsParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -101,6 +106,7 @@ func DeleteItems(params items.DeleteItemsParams) model.Item {
 
 }
 
+// DeleteItemsByOwner returns Itm given User.ID
 func DeleteItemsByOwner(params items.DeleteItemsByOwnerParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -113,6 +119,7 @@ func DeleteItemsByOwner(params items.DeleteItemsByOwnerParams) model.Item {
 
 }
 
+// DeleteItemsBySubCategory returns Item given SubCategory.ID
 func DeleteItemsBySubCategory(params items.DeleteItemsBySubCategoryParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -125,6 +132,7 @@ func DeleteItemsBySubCategory(params items.DeleteItemsBySubCategoryParams) model
 
 }
 
+// GetItem returns Item given Item.ID
 func GetItem(params items.GetItemParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -147,6 +155,7 @@ func GetItem(params items.GetItemParams) model.Item {
 
 }
 
+// GetItems returns Items
 func GetItems(params items.GetItemsParams) model.Items {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -171,6 +180,7 @@ func GetItems(params items.GetItemsParams) model.Items {
 
 }
 
+// GetItemsByOwner returns Items given User.ID in params
 func GetItemsByOwner(params items.GetItemsByOwnerParams) model.Items {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -195,6 +205,7 @@ func GetItemsByOwner(params items.GetItemsByOwnerParams) model.Items {
 
 }
 
+// GetItemsBySubCategory returns Items given SubCategory.ID in params
 func GetItemsBySubCategory(params items.GetItemsBySubCategoryParams) model.Items {
 	db := dbpkg.Connect()
 	defer db.Close()

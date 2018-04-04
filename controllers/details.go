@@ -6,6 +6,7 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/details"
 )
 
+// CreateDetail returns Detail
 func CreateDetail(params details.CreateDetailParams) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -18,6 +19,7 @@ func CreateDetail(params details.CreateDetailParams) model.Detail {
 	return d
 }
 
+// UpdateDetail returns Detail
 func UpdateDetail(params details.UpdateDetailParams) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -31,6 +33,7 @@ func UpdateDetail(params details.UpdateDetailParams) model.Detail {
 
 }
 
+// DeleteDetail returns empty Detail
 func DeleteDetail(params details.DeleteDetailParams) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -44,6 +47,7 @@ func DeleteDetail(params details.DeleteDetailParams) model.Detail {
 
 }
 
+// DeleteDetails returns empty Detail
 func DeleteDetails(params details.DeleteDetailsParams) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -56,6 +60,7 @@ func DeleteDetails(params details.DeleteDetailsParams) model.Detail {
 
 }
 
+// GetDetail returns Detail given Detail.ID
 func GetDetail(params details.GetDetailParams) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -69,6 +74,7 @@ func GetDetail(params details.GetDetailParams) model.Detail {
 
 }
 
+// GetDetails returns Details
 func GetDetails(params details.GetDetailsParams) model.Details {
 	db := dbpkg.Connect()
 	defer db.Close()

@@ -8,6 +8,7 @@ import (
 	"github.com/aeckard87/WornOut/restapi/operations/descriptors"
 )
 
+// CreateDescriptorByDetail returns type Descriptor.
 func CreateDescriptorByDetail(params descriptors.CreateDescriptorByDetailParams) model.Descriptor {
 	db := dbpkg.Connect()
 	defer db.Close()
@@ -21,6 +22,7 @@ func CreateDescriptorByDetail(params descriptors.CreateDescriptorByDetailParams)
 	return sc
 }
 
+// UpdateDescriptor returns type Descriptor.
 func UpdateDescriptor(params descriptors.UpdateDescriptorParams) model.Descriptor {
 	fmt.Println("Update Descriptor")
 	db := dbpkg.Connect()
@@ -35,6 +37,7 @@ func UpdateDescriptor(params descriptors.UpdateDescriptorParams) model.Descripto
 
 }
 
+// DeleteDescriptor returns empty Descriptor.
 func DeleteDescriptor(params descriptors.DeleteDescriptorParams) model.Descriptor {
 	fmt.Println("Delete Descriptor")
 	db := dbpkg.Connect()
@@ -49,6 +52,7 @@ func DeleteDescriptor(params descriptors.DeleteDescriptorParams) model.Descripto
 
 }
 
+// DeleteDescriptorsByDetail returns empty Descriptor given Detail.ID.
 func DeleteDescriptorsByDetail(params descriptors.DeleteDescriptorsByDetailParams) model.Descriptor {
 	fmt.Println("Delete Descriptors by Detail")
 	db := dbpkg.Connect()
@@ -65,6 +69,7 @@ func DeleteDescriptorsByDetail(params descriptors.DeleteDescriptorsByDetailParam
 
 }
 
+// DeleteDescriptors returns empty Descriptor.
 func DeleteDescriptors(params descriptors.DeleteDescriptorsParams) model.Descriptor {
 	fmt.Println("Delete Descriptors")
 	db := dbpkg.Connect()
@@ -80,6 +85,8 @@ func DeleteDescriptors(params descriptors.DeleteDescriptorsParams) model.Descrip
 	return sc
 
 }
+
+// GetDescriptor returns Descriptor given Descriptor.ID.
 func GetDescriptor(params descriptors.GetDescriptorParams) model.Descriptor {
 	fmt.Println("GetDescriptor")
 	db := dbpkg.Connect()
@@ -93,6 +100,7 @@ func GetDescriptor(params descriptors.GetDescriptorParams) model.Descriptor {
 
 }
 
+// GetDescriptorsByDetail returns Descriptors given Detail.ID.
 func GetDescriptorsByDetail(params descriptors.GetDescriptorsByDetailParams) model.Descriptors {
 	fmt.Println("GetDescriptorsByDetail")
 	db := dbpkg.Connect()
@@ -105,6 +113,7 @@ func GetDescriptorsByDetail(params descriptors.GetDescriptorsByDetailParams) mod
 	return sc
 }
 
+// GetDescriptors returns Descriptors.
 func GetDescriptors(params descriptors.GetDescriptorsParams) model.Descriptors {
 	fmt.Println("GetDescriptors")
 	db := dbpkg.Connect()
