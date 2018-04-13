@@ -46,7 +46,7 @@ func (o *GetSubCategoriesByCategoryOK) SetPayload(payload models.SubCategories) 
 
 // WriteResponse to the client
 func (o *GetSubCategoriesByCategoryOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(200)
 	payload := o.Payload
 	if payload == nil {
@@ -76,6 +76,6 @@ func NewGetSubCategoriesByCategoryNotFound() *GetSubCategoriesByCategoryNotFound
 
 // WriteResponse to the client
 func (o *GetSubCategoriesByCategoryNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(404)
 }
