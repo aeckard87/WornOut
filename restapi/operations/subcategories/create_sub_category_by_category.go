@@ -29,7 +29,7 @@ func NewCreateSubCategoryByCategory(ctx *middleware.Context, handler CreateSubCa
 	return &CreateSubCategoryByCategory{Context: ctx, Handler: handler}
 }
 
-/*CreateSubCategoryByCategory swagger:route POST /catagories/{id}/subcategories Subcategories createSubCategoryByCategory
+/*CreateSubCategoryByCategory swagger:route POST /categories/{id}/subcategories Subcategories createSubCategoryByCategory
 
 Create a SubCategory by Category
 

@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/aeckard87/WornOut/models"
+	"github.com/aeckard87/test/models"
 )
 
 // CreateSubCategoryByCategoryReader is a Reader for the CreateSubCategoryByCategory structure.
@@ -58,7 +58,7 @@ type CreateSubCategoryByCategoryCreated struct {
 }
 
 func (o *CreateSubCategoryByCategoryCreated) Error() string {
-	return fmt.Sprintf("[POST /catagories/{id}/subcategories][%d] createSubCategoryByCategoryCreated  %+v", 201, o.Payload)
+	return fmt.Sprintf("[POST /categories/{id}/subcategories][%d] createSubCategoryByCategoryCreated  %+v", 201, o.Payload)
 }
 
 func (o *CreateSubCategoryByCategoryCreated) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -86,7 +86,7 @@ type CreateSubCategoryByCategoryBadRequest struct {
 }
 
 func (o *CreateSubCategoryByCategoryBadRequest) Error() string {
-	return fmt.Sprintf("[POST /catagories/{id}/subcategories][%d] createSubCategoryByCategoryBadRequest ", 400)
+	return fmt.Sprintf("[POST /categories/{id}/subcategories][%d] createSubCategoryByCategoryBadRequest ", 400)
 }
 
 func (o *CreateSubCategoryByCategoryBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

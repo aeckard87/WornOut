@@ -29,7 +29,7 @@ func NewDeleteSubCategoriesByCategory(ctx *middleware.Context, handler DeleteSub
 	return &DeleteSubCategoriesByCategory{Context: ctx, Handler: handler}
 }
 
-/*DeleteSubCategoriesByCategory swagger:route DELETE /catagories/{id}/subcategories Subcategories deleteSubCategoriesByCategory
+/*DeleteSubCategoriesByCategory swagger:route DELETE /categories/{id}/subcategories Subcategories deleteSubCategoriesByCategory
 
 Delete all SubCategories By Category
 

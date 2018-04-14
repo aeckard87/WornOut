@@ -29,7 +29,7 @@ func init() {
   "host": "localhost:9000",
   "basePath": "/v1",
   "paths": {
-    "/catagories/{id}/subcategories": {
+    "/categories/{id}/subcategories": {
       "get": {
         "consumes": [
           "application/json"

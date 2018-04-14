@@ -42,7 +42,7 @@ func (o *GetSubCategoriesByCategoryURL) SetBasePath(bp string) {
 func (o *GetSubCategoriesByCategoryURL) Build() (*url.URL, error) {
 	var result url.URL
 
-	var _path = "/catagories/{id}/subcategories"
+	var _path = "/categories/{id}/subcategories"
 
 	id := swag.FormatInt64(o.ID)
 	if id != "" {

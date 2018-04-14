@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/aeckard87/WornOut/models"
+	"github.com/aeckard87/test/models"
 )
 
 // GetSubCategoriesByCategoryReader is a Reader for the GetSubCategoriesByCategory structure.
@@ -58,7 +58,7 @@ type GetSubCategoriesByCategoryOK struct {
 }
 
 func (o *GetSubCategoriesByCategoryOK) Error() string {
-	return fmt.Sprintf("[GET /catagories/{id}/subcategories][%d] getSubCategoriesByCategoryOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[GET /categories/{id}/subcategories][%d] getSubCategoriesByCategoryOK  %+v", 200, o.Payload)
 }
 
 func (o *GetSubCategoriesByCategoryOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -84,7 +84,7 @@ type GetSubCategoriesByCategoryNotFound struct {
 }
 
 func (o *GetSubCategoriesByCategoryNotFound) Error() string {
-	return fmt.Sprintf("[GET /catagories/{id}/subcategories][%d] getSubCategoriesByCategoryNotFound ", 404)
+	return fmt.Sprintf("[GET /categories/{id}/subcategories][%d] getSubCategoriesByCategoryNotFound ", 404)
 }
 
 func (o *GetSubCategoriesByCategoryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

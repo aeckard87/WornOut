@@ -25,34 +25,6 @@ type Client struct {
 }
 
 /*
-CreateSubCategory creates a sub category
-*/
-func (a *Client) CreateSubCategory(params *CreateSubCategoryParams) (*CreateSubCategoryCreated, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewCreateSubCategoryParams()
-	}
-
-	result, err := a.transport.Submit(&runtime.ClientOperation{
-		ID:                 "createSubCategory",
-		Method:             "POST",
-		PathPattern:        "/subcategories",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http"},
-		Params:             params,
-		Reader:             &CreateSubCategoryReader{formats: a.formats},
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	})
-	if err != nil {
-		return nil, err
-	}
-	return result.(*CreateSubCategoryCreated), nil
-
-}
-
-/*
 CreateSubCategoryByCategory creates a sub category by category
 */
 func (a *Client) CreateSubCategoryByCategory(params *CreateSubCategoryByCategoryParams) (*CreateSubCategoryByCategoryCreated, error) {
@@ -64,7 +36,7 @@ func (a *Client) CreateSubCategoryByCategory(params *CreateSubCategoryByCategory
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "createSubCategoryByCategory",
 		Method:             "POST",
-		PathPattern:        "/catagories/{id}/subcategories",
+		PathPattern:        "/categories/{id}/subcategories",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -124,7 +96,7 @@ func (a *Client) DeleteSubCategoriesByCategory(params *DeleteSubCategoriesByCate
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "deleteSubCategoriesByCategory",
 		Method:             "DELETE",
-		PathPattern:        "/catagories/{id}/subcategories",
+		PathPattern:        "/categories/{id}/subcategories",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
@@ -210,7 +182,7 @@ func (a *Client) GetSubCategoriesByCategory(params *GetSubCategoriesByCategoryPa
 	result, err := a.transport.Submit(&runtime.ClientOperation{
 		ID:                 "getSubCategoriesByCategory",
 		Method:             "GET",
-		PathPattern:        "/catagories/{id}/subcategories",
+		PathPattern:        "/categories/{id}/subcategories",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},

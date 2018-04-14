@@ -29,7 +29,7 @@ func NewGetSubCategoriesByCategory(ctx *middleware.Context, handler GetSubCatego
 	return &GetSubCategoriesByCategory{Context: ctx, Handler: handler}
 }
 
-/*GetSubCategoriesByCategory swagger:route GET /catagories/{id}/subcategories Subcategories getSubCategoriesByCategory
+/*GetSubCategoriesByCategory swagger:route GET /categories/{id}/subcategories Subcategories getSubCategoriesByCategory
 
 Get all SubCategories by Category
 

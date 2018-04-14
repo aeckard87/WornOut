@@ -643,7 +643,7 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/catagories/{id}/subcategories"] = subcategories.NewCreateSubCategoryByCategory(o.context, o.SubcategoriesCreateSubCategoryByCategoryHandler)
+	o.handlers["POST"]["/categories/{id}/subcategories"] = subcategories.NewCreateSubCategoryByCategory(o.context, o.SubcategoriesCreateSubCategoryByCategoryHandler)
 
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
@@ -713,7 +713,7 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
 	}
-	o.handlers["DELETE"]["/catagories/{id}/subcategories"] = subcategories.NewDeleteSubCategoriesByCategory(o.context, o.SubcategoriesDeleteSubCategoriesByCategoryHandler)
+	o.handlers["DELETE"]["/categories/{id}/subcategories"] = subcategories.NewDeleteSubCategoriesByCategory(o.context, o.SubcategoriesDeleteSubCategoriesByCategoryHandler)
 
 	if o.handlers["DELETE"] == nil {
 		o.handlers["DELETE"] = make(map[string]http.Handler)
@@ -793,7 +793,7 @@ func (o *WornOutAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/catagories/{id}/subcategories"] = subcategories.NewGetSubCategoriesByCategory(o.context, o.SubcategoriesGetSubCategoriesByCategoryHandler)
+	o.handlers["GET"]["/categories/{id}/subcategories"] = subcategories.NewGetSubCategoriesByCategory(o.context, o.SubcategoriesGetSubCategoriesByCategoryHandler)
 
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)

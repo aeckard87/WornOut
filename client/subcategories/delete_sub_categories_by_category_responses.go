@@ -54,7 +54,7 @@ type DeleteSubCategoriesByCategoryOK struct {
 }
 
 func (o *DeleteSubCategoriesByCategoryOK) Error() string {
-	return fmt.Sprintf("[DELETE /catagories/{id}/subcategories][%d] deleteSubCategoriesByCategoryOK ", 200)
+	return fmt.Sprintf("[DELETE /categories/{id}/subcategories][%d] deleteSubCategoriesByCategoryOK ", 200)
 }
 
 func (o *DeleteSubCategoriesByCategoryOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
@@ -75,7 +75,7 @@ type DeleteSubCategoriesByCategoryNotFound struct {
 }
 
 func (o *DeleteSubCategoriesByCategoryNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /catagories/{id}/subcategories][%d] deleteSubCategoriesByCategoryNotFound ", 404)
+	return fmt.Sprintf("[DELETE /categories/{id}/subcategories][%d] deleteSubCategoriesByCategoryNotFound ", 404)
 }
 
 func (o *DeleteSubCategoriesByCategoryNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

@@ -178,7 +178,7 @@ paths:
           description: Status Ok
         '404':
           description: No items found
-  '/catagories/{id}/subcategories':
+  '/categories/{id}/subcategories':
     get:
       tags:
         - Subcategories

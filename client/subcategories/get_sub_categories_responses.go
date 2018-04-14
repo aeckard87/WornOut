@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/aeckard87/WornOut/models"
+	"github.com/aeckard87/test/models"
 )
 
 // GetSubCategoriesReader is a Reader for the GetSubCategories structure.
