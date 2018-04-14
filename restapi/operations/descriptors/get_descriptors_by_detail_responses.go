@@ -46,6 +46,7 @@ func (o *GetDescriptorsByDetailOK) SetPayload(payload models.Descriptors) {
 
 // WriteResponse to the client
 func (o *GetDescriptorsByDetailOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 
 	rw.WriteHeader(200)
 	payload := o.Payload
@@ -76,6 +77,6 @@ func NewGetDescriptorsByDetailNotFound() *GetDescriptorsByDetailNotFound {
 
 // WriteResponse to the client
 func (o *GetDescriptorsByDetailNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(404)
 }

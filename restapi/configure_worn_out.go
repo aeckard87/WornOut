@@ -206,9 +206,6 @@ func configureAPI(api *operations.WornOutAPI) http.Handler {
 	})
 	api.DescriptorsGetDescriptorsByDetailHandler = descriptors.GetDescriptorsByDetailHandlerFunc(func(params descriptors.GetDescriptorsByDetailParams) middleware.Responder {
 		fetched := controller.GetDescriptorsByDetail(params)
-		if len(fetched) == 0 {
-			return descriptors.NewGetDescriptorsByDetailNotFound()
-		}
 		return descriptors.NewGetDescriptorsByDetailOK().WithPayload(fetched)
 		// return descriptors.NewGetDescriptorsByDetailOK().WithPayload(fetched)
 	})
