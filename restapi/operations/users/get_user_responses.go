@@ -46,6 +46,7 @@ func (o *GetUserOK) SetPayload(payload *models.User) {
 
 // WriteResponse to the client
 func (o *GetUserOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 
 	rw.WriteHeader(200)
 	if o.Payload != nil {
@@ -94,6 +95,6 @@ func NewGetUserNotFound() *GetUserNotFound {
 
 // WriteResponse to the client
 func (o *GetUserNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(404)
 }
