@@ -46,7 +46,7 @@ func (o *GetCategoryOK) SetPayload(payload *models.Category) {
 
 // WriteResponse to the client
 func (o *GetCategoryOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(200)
 	if o.Payload != nil {
 		payload := o.Payload
@@ -94,6 +94,6 @@ func NewGetCategoryNotFound() *GetCategoryNotFound {
 
 // WriteResponse to the client
 func (o *GetCategoryNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(404)
 }

@@ -46,7 +46,7 @@ func (o *GetDetailOK) SetPayload(payload *models.Detail) {
 
 // WriteResponse to the client
 func (o *GetDetailOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(200)
 	if o.Payload != nil {
 		payload := o.Payload
@@ -94,6 +94,6 @@ func NewGetDetailNotFound() *GetDetailNotFound {
 
 // WriteResponse to the client
 func (o *GetDetailNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
 	rw.WriteHeader(404)
 }
