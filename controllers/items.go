@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
+	"log"
 
 	dbpkg "github.com/aeckard87/WornOut/db"
 	model "github.com/aeckard87/WornOut/models"
@@ -18,15 +18,26 @@ type Descriptions struct {
 func CreateItem(params items.CreateItemParams) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
+	var descriptors []model.Descriptor
 
-	descriptions, err := json.Marshal(params.Body.Descriptions)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(string(descriptions))
-	db.Exec("INSERT INTO items (name,sub_category_id,descriptions,user_id) VALUES (?,?,?,?)", params.Body.Name, params.Body.SubCategoryID, string(descriptions), params.Body.UserID)
+	// descriptions, err := json.Marshal(params.Body.Descriptions)
+	descriptors = params.Body.Descriptions
+	// err := json.Unmarshal([]byte(params.Body.Descriptions), &descriptors)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// fmt.Println(string(descriptions))
+	db.Exec("INSERT INTO items (name,sub_category_id,user_id) VALUES (?,?,?)", params.Body.Name, params.Body.SubCategoryID, params.Body.UserID)
+	// , string(descriptions)
 
 	item := GetItemByName(params.Body.Name)
+
+	for index, _ := range descriptors {
+		fmt.Println(descriptors[index].Descriptor)
+		db.Exec("INSERT INTO items2descriptors (item_id,descriptor_id) VALUES (?,?)", item.ID, descriptors[index].ID)
+	}
+
+	item = GetItemByName(params.Body.Name)
 
 	return item
 }
@@ -38,24 +49,29 @@ func GetItemByName(name string) model.Item {
 	var item model.Item
 
 	//This Gets everything BUT descriptions
-	db.Where("name = ?", name).Find(&item)
-	db.Select("user_id").Table("items").Where("name = ?", name).Scan(&item)
-	// db.DB().QueryRow("SELECT * FROM items WHERE name = ?", name).Scan(&item.ID, &item.Name, &item.SubCategoryID, &item.UserID, &item.Descriptions)
-	// a, err := json.Marshal(item)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println("Item:\t", string(a))
+	db.Select("*").Where("name = ?", name).Find(&item)
 
-	// This properly gets descriptions!
+	// Gets Descriptions
+	rows, err := db.Raw("SELECT descriptors.* FROM  descriptors JOIN items2descriptors ON descriptors.id = items2descriptors.descriptor_id WHERE items2descriptors.item_id = ?;", fmt.Sprint(item.ID)).Rows()
 
-	var blob string
-	db.DB().QueryRow("SELECT descriptions FROM items WHERE name = ?", name).Scan(&blob)
-	// fmt.Println(blob)
-	err := json.Unmarshal([]byte(blob), &item.Descriptions)
 	if err != nil {
 		fmt.Println(err)
 	}
+	defer rows.Close()
+	var descriptions []model.Descriptor
+	for rows.Next() {
+		var descriptor model.Descriptor
+
+		if err := rows.Scan(&descriptor.ID, &descriptor.Descriptor, &descriptor.DetailID); err != nil {
+			log.Fatal(err)
+		}
+		descriptions = append(descriptions, descriptor)
+	}
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	item.Descriptions = descriptions
 
 	//Marshal
 	// b, err := json.Marshal(item.Descriptions)
@@ -74,9 +90,27 @@ func UpdateItem(params items.UpdateItemParams) model.Item {
 
 	var item model.Item
 
-	db.Model(&item).Where("id = ?", params.ID).Updates(params.Body)
-	// fmt.Println("UPDATED", item)
-	item.ID = params.ID
+	params.Body.ID = params.ID
+
+	// db.Where("id = ?", params.ID).Table("items").Updates(params.Body.Name)
+	db.Model(&item).Where("id = ?", params.ID).Update("name", params.Body.Name)
+	db.Model(&item).Where("id = ?", params.ID).Update("user_id", params.Body.UserID)
+	db.Model(&item).Where("id = ?", params.ID).Update("sub_category_id", params.Body.SubCategoryID)
+
+	//This Gets everything BUT descriptions
+	db.Select("*").Where("id = ?", params.ID).Find(&item)
+
+	//rm all descriptors then add them back *yea I know... how horrible of me.
+	db.Exec("DELETE FROM items2descriptors WHERE item_id = ?;", params.ID)
+
+	descriptors := params.Body.Descriptions
+	for index := range descriptors {
+		fmt.Println(descriptors[index].Descriptor)
+		db.Exec("INSERT INTO items2descriptors (item_id,descriptor_id) VALUES (?,?)", params.ID, descriptors[index].ID)
+	}
+
+	item.Descriptions = getItemsDescriptionByID(params.ID)
+
 	return item
 
 }
@@ -140,17 +174,10 @@ func GetItem(params items.GetItemParams) model.Item {
 	var item model.Item
 
 	//This Gets everything BUT descriptions
-	db.Where("id = ?", params.ID).Find(&item)
-	db.Select("user_id").Table("items").Where("id = ?", params.ID).Scan(&item)
+	db.Select("*").Where("id = ?", params.ID).Find(&item)
 
-	// This properly gets descriptions!
-	var blob string
-	db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", params.ID).Scan(&blob)
-	// fmt.Println(blob)
-	err := json.Unmarshal([]byte(blob), &item.Descriptions)
-	if err != nil {
-		fmt.Println(err)
-	}
+	// Gets Descriptions
+	item.Descriptions = getItemsDescriptionByID(params.ID)
 
 	return item
 
@@ -163,18 +190,10 @@ func GetItems(params items.GetItemsParams) model.Items {
 
 	var items model.Items
 
-	db.Find(&items)
+	db.Select("*").Table("items").Scan(&items)
 	for _, item := range items {
-		db.Select("user_id").Table("items").Where("id = ?", item.ID).Scan(&item)
 
-		// This properly gets descriptions!
-		var blob string
-		db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", item.ID).Scan(&blob)
-		// fmt.Println(blob)
-		err := json.Unmarshal([]byte(blob), &item.Descriptions)
-		if err != nil {
-			fmt.Println(err)
-		}
+		item.Descriptions = getItemsDescriptionByID(item.ID)
 	}
 
 	return items
@@ -188,18 +207,9 @@ func GetItemsByOwner(params items.GetItemsByOwnerParams) model.Items {
 
 	var items model.Items
 
-	db.Where("user_id=?", params.ID).Find(&items)
+	db.Select("*").Table("items").Where("user_id=?", params.ID).Scan(&items)
 	for _, item := range items {
-		db.Select("user_id").Table("items").Where("id = ?", item.ID).Scan(&item)
-
-		// This properly gets descriptions!
-		var blob string
-		db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", item.ID).Scan(&blob)
-		// fmt.Println(blob)
-		err := json.Unmarshal([]byte(blob), &item.Descriptions)
-		if err != nil {
-			fmt.Println(err)
-		}
+		item.Descriptions = getItemsDescriptionByID(item.ID)
 	}
 
 	return items
@@ -213,20 +223,38 @@ func GetItemsBySubCategory(params items.GetItemsBySubCategoryParams) model.Items
 
 	var items model.Items
 
-	db.Where("sub_category_id=?", params.ID).Find(&items)
+	db.Select("*").Table("items").Where("sub_category_id=?", params.ID).Scan(&items)
 	for _, item := range items {
-		db.Select("user_id").Table("items").Where("id = ?", item.ID).Scan(&item)
-
-		// This properly gets descriptions!
-		var blob string
-		db.DB().QueryRow("SELECT descriptions FROM items WHERE id = ?", item.ID).Scan(&blob)
-		// fmt.Println(blob)
-		err := json.Unmarshal([]byte(blob), &item.Descriptions)
-		if err != nil {
-			fmt.Println(err)
-		}
+		item.Descriptions = getItemsDescriptionByID(item.ID)
 	}
 
 	return items
 
+}
+
+func getItemsDescriptionByID(id int64) []model.Descriptor {
+	db := dbpkg.Connect()
+	defer db.Close()
+	// Gets Descriptions
+
+	var descriptions []model.Descriptor
+	rows, err := db.Raw("SELECT descriptors.* FROM  descriptors JOIN items2descriptors ON descriptors.id = items2descriptors.descriptor_id WHERE items2descriptors.item_id = ?;", id).Rows()
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var descriptor model.Descriptor
+
+		if err := rows.Scan(&descriptor.ID, &descriptor.Descriptor, &descriptor.DetailID); err != nil {
+			log.Fatal(err)
+		}
+		descriptions = append(descriptions, descriptor)
+	}
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return descriptions
 }
