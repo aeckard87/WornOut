@@ -27,6 +27,7 @@ func UpdateDetail(params details.UpdateDetailParams) model.Detail {
 	var d model.Detail
 
 	db.Model(&d).Where("id = ?", params.ID).Update("detail", params.Body.Detail)
+	//cascade items values
 
 	d.ID = params.ID
 	return d

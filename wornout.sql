@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `wornout` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `wornout`;
 -- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
 -- Host: 127.0.0.1    Database: wornout
@@ -29,7 +27,7 @@ CREATE TABLE `categories` (
   `category` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `category` (`category`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +36,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (12,'Bottoms'),(13,'FullBody'),(11,'Tops'),(14,'Undergarments');
+INSERT INTO `categories` VALUES (15,'Bottoms'),(13,'Full Body'),(11,'Tops'),(14,'Undergarments');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,8 +54,9 @@ CREATE TABLE `descriptors` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `descriptor_UNIQUE` (`descriptor`),
   KEY `det_idx` (`detail_id`),
+  KEY `it2des_idx` (`id`),
   CONSTRAINT `det` FOREIGN KEY (`detail_id`) REFERENCES `details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +65,7 @@ CREATE TABLE `descriptors` (
 
 LOCK TABLES `descriptors` WRITE;
 /*!40000 ALTER TABLE `descriptors` DISABLE KEYS */;
-INSERT INTO `descriptors` VALUES (7,'Yellow',5),(8,'Blue',5),(9,'White',5),(10,'Grey',5),(11,'Coach',4),(12,'Vera Bradley',4),(13,'Forever 21',4),(14,'Levi\'s',4);
+INSERT INTO `descriptors` VALUES (15,'Levi',10),(16,'Forever 21',10),(17,'White',5),(18,'Black',5),(19,'Yellow',5),(20,'Cotton',11),(21,'Silk',11),(22,'Jean',11),(23,'Small',8),(24,'Medium',8);
 /*!40000 ALTER TABLE `descriptors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +81,7 @@ CREATE TABLE `details` (
   `detail` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `detail` (`detail`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +90,7 @@ CREATE TABLE `details` (
 
 LOCK TABLES `details` WRITE;
 /*!40000 ALTER TABLE `details` DISABLE KEYS */;
-INSERT INTO `details` VALUES (4,'Brand'),(5,'Color');
+INSERT INTO `details` VALUES (10,'Brands'),(5,'Colors'),(11,'Materials'),(8,'Size');
 /*!40000 ALTER TABLE `details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +105,6 @@ CREATE TABLE `items` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `sub_category_id` bigint(20) DEFAULT NULL,
-  `descriptors` blob,
   `user_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
@@ -114,7 +112,7 @@ CREATE TABLE `items` (
   KEY `itemUserID_idx` (`user_id`),
   CONSTRAINT `itemSubCatID` FOREIGN KEY (`sub_category_id`) REFERENCES `sub_categories` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `itemUserID` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +121,35 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
+INSERT INTO `items` VALUES (38,'Blue V-Neck Top',1,4),(40,'Pink V-Neck Top',1,4);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `items2descriptors`
+--
+
+DROP TABLE IF EXISTS `items2descriptors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `items2descriptors` (
+  `item_id` bigint(20) NOT NULL,
+  `descriptor_id` bigint(20) NOT NULL,
+  KEY `ite2desc_descID_idx` (`descriptor_id`),
+  KEY `ite2desc_itemID_idx` (`item_id`),
+  CONSTRAINT `ite2desc_descID` FOREIGN KEY (`descriptor_id`) REFERENCES `descriptors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ite2desc_itemID` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `items2descriptors`
+--
+
+LOCK TABLES `items2descriptors` WRITE;
+/*!40000 ALTER TABLE `items2descriptors` DISABLE KEYS */;
+INSERT INTO `items2descriptors` VALUES (38,16),(38,20),(40,16),(40,20);
+/*!40000 ALTER TABLE `items2descriptors` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -141,7 +167,7 @@ CREATE TABLE `sub_categories` (
   UNIQUE KEY `subcategory` (`subcategory`),
   KEY `cat_idx` (`category_id`),
   CONSTRAINT `cat` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +176,7 @@ CREATE TABLE `sub_categories` (
 
 LOCK TABLES `sub_categories` WRITE;
 /*!40000 ALTER TABLE `sub_categories` DISABLE KEYS */;
-INSERT INTO `sub_categories` VALUES (1,'T-Shirt',11),(2,'Tank',11),(3,'Blouse',11),(4,'Long Sleeve',11),(5,'Sweats',12),(6,'Leggings',12),(7,'Skirt',12),(8,'Blue Jeans',12),(9,'Dress Pants',12),(10,'Formal Dress',13),(11,'Casual Dress',13),(12,'Bathing Suit',13),(13,'Night Gown',13),(14,'Underwear',14),(15,'Boxers',14),(16,'Bra',14);
+INSERT INTO `sub_categories` VALUES (1,'T-Shirt',11),(2,'Tank',11),(3,'Blouse',11),(4,'Long-Sleeve',11),(10,'Formal Dress',13),(11,'Casual Dress',13),(12,'Bathing Suit',13),(13,'Night Gown',13),(14,'Underwear',14),(15,'Boxers',14),(16,'Bra',14),(17,'Shorts',15),(18,'Jeans',15),(21,'Sweater',11),(23,'Skirts',15);
 /*!40000 ALTER TABLE `sub_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +195,7 @@ CREATE TABLE `users` (
   `email` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,6 +204,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (4,'aeckard','Ashley','Eckard','ashley_eckard@outlook.com'),(5,'beckard','Brad','Eckard','Beckard@outlook.com'),(6,'lilBloom','Lilly','Eckard','lilly_eckard@outlook.com');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -190,4 +217,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-01 21:11:00
+-- Dump completed on 2018-04-27 22:08:14

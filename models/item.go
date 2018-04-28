@@ -18,7 +18,7 @@ import (
 type Item struct {
 
 	// descriptions
-	Descriptions Descriptors `json:"descriptions"`
+	Descriptions []Descriptor `json:"descriptions"`
 
 	// id
 	ID int64 `json:"id,omitempty"`
