@@ -1,89 +1,80 @@
 package controllers
 
 import (
-	dbpkg "github.com/aeckard87/WornOut/db"
-	model "github.com/aeckard87/WornOut/models"
-	"github.com/aeckard87/WornOut/restapi/operations/details"
+	"fmt"
+	"strconv"
+
+	dbpkg "github.com/aeckard87/goServe/db"
+	model "github.com/aeckard87/goServe/models"
 )
 
 // CreateDetail returns Detail
-func CreateDetail(params details.CreateDetailParams) model.Detail {
+func CreateDetail(detail model.Detail, id string) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	db.Create(&params.Body)
+	db.Create(&detail)
 
-	var d model.Detail
-
-	db.Where("detail = ?", params.Body.Detail).Find(&d)
-	return d
+	db.Where("detail = ?", detail.Detail).Find(&detail)
+	return detail
 }
 
-// UpdateDetail returns Detail
-func UpdateDetail(params details.UpdateDetailParams) model.Detail {
+// UpdateDetail returns updated result of type Detail.
+func UpdateDetail(detail model.Detail, id string) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var d model.Detail
-
-	db.Model(&d).Where("id = ?", params.ID).Update("detail", params.Body.Detail)
-	//cascade items values
-
-	d.ID = params.ID
-	return d
+	db.Model(&detail).Where("id = ?", id).Update("detail", detail)
+	detail.ID, _ = strconv.ParseInt(id, 10, 64)
+	return detail
 
 }
 
 // DeleteDetail returns empty Detail
-func DeleteDetail(params details.DeleteDetailParams) model.Detail {
+func DeleteDetail(detail model.Detail, id string) model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var d model.Detail
-	d.ID = params.ID
+	detail.ID, _ = strconv.ParseInt(id, 10, 64)
 
-	db.Delete(&d)
+	db.Delete(&detail)
 
-	return d
+	return detail
+}
+
+// DeleteDetails returns empty result of type Details
+func DeleteDetails() []model.Detail {
+	db := dbpkg.Connect()
+	defer db.Close()
+
+	var details []model.Detail
+	db.Delete(&details)
+
+	return details
+}
+
+// GetDetail returns a Detail.
+func GetDetail(detail model.Detail, id string) model.Detail {
+	db := dbpkg.Connect()
+	defer db.Close()
+	fmt.Println("ID: " + id)
+	detail.ID, _ = strconv.ParseInt(id, 10, 64)
+
+	db.First(&detail)
+
+	return detail
 
 }
 
-// DeleteDetails returns empty Detail
-func DeleteDetails(params details.DeleteDetailsParams) model.Detail {
+// GetDetails returns Details.
+func GetDetails() []model.Detail {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var d model.Detail
+	var details []model.Detail
 
-	db.Delete(&d)
+	db.Find(&details)
 
-	return d
-
-}
-
-// GetDetail returns Detail given Detail.ID
-func GetDetail(params details.GetDetailParams) model.Detail {
-	db := dbpkg.Connect()
-	defer db.Close()
-
-	var d model.Detail
-	d.ID = params.ID
-
-	db.First(&d)
-
-	return d
-
-}
-
-// GetDetails returns Details
-func GetDetails(params details.GetDetailsParams) model.Details {
-	db := dbpkg.Connect()
-	defer db.Close()
-
-	var d model.Details
-
-	db.Find(&d)
-
-	return d
+	return details
 
 }

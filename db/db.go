@@ -4,10 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
-	"github.com/aeckard87/WornOut/models"
-	"github.com/serenize/snaker"
+	"github.com/aeckard87/goServe/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -48,23 +46,23 @@ func DBInstance(c *gin.Context) *gorm.DB {
 }
 
 // SetPreloads returns *gorm.DB preloads
-func (par *Parameter) SetPreloads(db *gorm.DB) *gorm.DB {
-	if par.Preloads == "" {
-		return db
-	}
+// func (par *Parameter) SetPreloads(db *gorm.DB) *gorm.DB {
+// 	if par.Preloads == "" {
+// 		return db
+// 	}
 
-	for _, preload := range strings.Split(par.Preloads, ",") {
-		var a []string
+// 	for _, preload := range strings.Split(par.Preloads, ",") {
+// 		var a []string
 
-		for _, s := range strings.Split(preload, ".") {
-			a = append(a, snaker.SnakeToCamel(s))
-		}
+// 		for _, s := range strings.Split(preload, ".") {
+// 			a = append(a, snaker.SnakeToCamel(s))
+// 		}
 
-		db = db.Preload(strings.Join(a, "."))
-	}
+// 		db = db.Preload(strings.Join(a, "."))
+// 	}
 
-	return db
-}
+// 	return db
+// }
 
 func getConnectionString() string {
 	dbUsername := os.Getenv("WORN_OUT_DB_USERNAME")

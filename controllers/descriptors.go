@@ -3,126 +3,111 @@ package controllers
 import (
 	"fmt"
 
-	dbpkg "github.com/aeckard87/WornOut/db"
-	model "github.com/aeckard87/WornOut/models"
-	"github.com/aeckard87/WornOut/restapi/operations/descriptors"
+	dbpkg "github.com/aeckard87/goServe/db"
+	model "github.com/aeckard87/goServe/models"
 )
 
 // CreateDescriptorByDetail returns type Descriptor.
-func CreateDescriptorByDetail(params descriptors.CreateDescriptorByDetailParams) model.Descriptor {
+func CreateDescriptorByDetail(descriptor model.Descriptor, id string) model.Descriptor {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var sc model.Descriptor
-
 	// db.Create(&params.Body).Related(&detail)
-	db.Exec("insert into descriptors (descriptor,detail_id) values (?,?)", params.Body.Descriptor, params.ID)
+	db.Exec("insert into descriptors (descriptor,detail_id) values (?,?)", descriptor.Descriptor, id)
 
-	db.Where("descriptor = ?", params.Body.Descriptor).Find(&sc)
-	return sc
+	db.Where("descriptor = ?", descriptor.Descriptor).Find(&descriptor)
+	return descriptor
 }
 
 // UpdateDescriptor returns type Descriptor.
-func UpdateDescriptor(params descriptors.UpdateDescriptorParams) model.Descriptor {
+func UpdateDescriptor(descriptor model.Descriptor, id string) model.Descriptor {
 	fmt.Println("Update Descriptor")
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	var sc model.Descriptor
-
-	db.Model(&sc).Where("id = ?", params.ID).Update("descriptor", params.Body.Descriptor)
-	db.Where("id = ?", params.ID).Find(&sc)
-	return sc
+	db.Model(&descriptor).Where("id = ?", id).Update("descriptor", descriptor)
+	db.Where("id = ?", id).Find(&descriptor)
+	return descriptor
 
 }
 
 // DeleteDescriptor returns empty Descriptor.
-func DeleteDescriptor(params descriptors.DeleteDescriptorParams) model.Descriptor {
+func DeleteDescriptor(id string) model.Descriptor {
 	fmt.Println("Delete Descriptor")
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	var sc model.Descriptor
+	var descriptor model.Descriptor
 
-	db.Where("id = ?", params.ID).Delete(&sc)
+	db.Where("id = ?", id).Delete(&descriptor)
 
-	return sc
-
+	return descriptor
 }
 
 // DeleteDescriptorsByDetail returns empty Descriptor given Detail.ID.
-func DeleteDescriptorsByDetail(params descriptors.DeleteDescriptorsByDetailParams) model.Descriptor {
+func DeleteDescriptorsByDetail(id string) []model.Descriptor {
 	fmt.Println("Delete Descriptors by Detail")
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Delete Record ID", params.ID)
+	var descriptors []model.Descriptor
 
-	var sc model.Descriptor
+	db.Where("detail_id = ?", id).Delete(&descriptors)
 
-	db.Where("detail_id = ?", params.ID).Delete(&sc)
-
-	return sc
+	return descriptors
 
 }
 
 // DeleteDescriptors returns empty Descriptor.
-func DeleteDescriptors(params descriptors.DeleteDescriptorsParams) model.Descriptor {
+func DeleteDescriptors() []model.Descriptor {
 	fmt.Println("Delete Descriptors")
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Delete Record ID", params.ID)
+	var descriptor []model.Descriptor
 
-	var sc model.Descriptor
+	db.Delete(&descriptor)
 
-	db.Delete(&sc)
-
-	return sc
-
+	return descriptor
 }
 
 // GetDescriptor returns Descriptor given Descriptor.ID.
-func GetDescriptor(params descriptors.GetDescriptorParams) model.Descriptor {
+func GetDescriptor(id string) model.Descriptor {
 	fmt.Println("GetDescriptor")
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var sc model.Descriptor
+	var descriptor model.Descriptor
 
-	db.Where("id = ?", params.ID).Find(&sc)
+	db.Where("id = ?", id).Find(&descriptor)
 
-	return sc
+	return descriptor
 
 }
 
 // GetDescriptorsByDetail returns Descriptors given Detail.ID.
-func GetDescriptorsByDetail(params descriptors.GetDescriptorsByDetailParams) model.Descriptors {
+func GetDescriptorsByDetail(id string) []model.Descriptor {
 	fmt.Println("GetDescriptorsByDetail")
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var sc model.Descriptors
+	var descriptors []model.Descriptor
 
-	db.Where("detail_id = ?", params.ID).Find(&sc)
+	db.Where("detail_id = ?", id).Find(&descriptors)
 
-	return sc
+	return descriptors
 }
 
 // GetDescriptors returns Descriptors.
-func GetDescriptors(params descriptors.GetDescriptorsParams) model.Descriptors {
+func GetDescriptors() []model.Descriptor {
 	fmt.Println("GetDescriptors")
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var sc model.Descriptors
+	var descriptors []model.Descriptor
 
-	db.Find(&sc)
+	db.Find(&descriptors)
 
-	return sc
+	return descriptors
 
 }

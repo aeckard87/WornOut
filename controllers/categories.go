@@ -1,56 +1,42 @@
 package controllers
 
 import (
-	"fmt"
+	"strconv"
 
-	dbpkg "github.com/aeckard87/WornOut/db"
-	model "github.com/aeckard87/WornOut/models"
-	"github.com/aeckard87/WornOut/restapi/operations/categories"
+	dbpkg "github.com/aeckard87/goServe/db"
+	model "github.com/aeckard87/goServe/models"
+	// "github.com/aeckard87/test/client/categories"
 )
 
 // CreateCategory returns created result of type Category.
-func CreateCategory(params categories.CreateCategoryParams) model.Category {
+func CreateCategory(category model.Category) model.Category {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("New Record for category", params.Category)
+	db.Create(&category)
 
-	db.Create(&params.Body)
-
-	var category model.Category
-
-	db.Where("category = ?", params.Body.Category).Find(&category)
+	db.Where("category = ?", category.Category).Find(&category)
 	return category
 }
 
 // UpdateCategory returns updated result of type Category.
-func UpdateCategory(params categories.UpdateCategoryParams) model.Category {
+func UpdateCategory(category model.Category, id string) model.Category {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Update Record to category", params.Body.Category)
-
-	var category model.Category
-
-	db.Model(&category).Where("id = ?", params.ID).Update("category", params.Body.Category)
-	// fmt.Println("UPDATED", category)
-	category.ID = params.ID
+	db.Model(&category).Where("id = ?", id).Update("category", category)
+	category.ID, _ = strconv.ParseInt(id, 10, 64)
 	return category
 
 }
 
 // DeleteCategory returns empty result of type Category.
-func DeleteCategory(params categories.DeleteCategoryParams) model.Category {
+func DeleteCategory(id string) model.Category {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Delete Record ID", params.ID)
-
 	var category model.Category
-	category.ID = params.ID
+	category.ID, _ = strconv.ParseInt(id, 10, 64)
 
 	db.Delete(&category)
 
@@ -59,31 +45,24 @@ func DeleteCategory(params categories.DeleteCategoryParams) model.Category {
 }
 
 // DeleteCategories returns empty result of type Categories
-func DeleteCategories(params categories.DeleteCategoriesParams) model.Category {
+func DeleteCategories() []model.Category {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	// fmt.Println("Delete Record ID", params.ID)
+	var categories []model.Category
+	db.Delete(&categories)
 
-	var category model.Category
-
-	db.Delete(&category)
-
-	return category
+	return categories
 
 }
 
 // GetCategory returns a Category.
-func GetCategory(params categories.GetCategoryParams) model.Category {
+func GetCategory(id string) model.Category {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	fmt.Println("Get Record ID", params.ID)
-
 	var category model.Category
-	category.ID = params.ID
+	category.ID, _ = strconv.ParseInt(id, 10, 64)
 
 	db.First(&category)
 
@@ -92,14 +71,11 @@ func GetCategory(params categories.GetCategoryParams) model.Category {
 }
 
 // GetCategories returns Categories.
-func GetCategories(params categories.GetCategoriesParams) model.Categories {
+func GetCategories() []model.Category {
 	db := dbpkg.Connect()
-
 	defer db.Close()
 
-	fmt.Println("Get All Records")
-
-	var categories model.Categories
+	var categories []model.Category
 
 	db.Find(&categories)
 

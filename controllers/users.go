@@ -1,45 +1,40 @@
 package controllers
 
 import (
-	dbpkg "github.com/aeckard87/WornOut/db"
-	model "github.com/aeckard87/WornOut/models"
-	"github.com/aeckard87/WornOut/restapi/operations/users"
+	"strconv"
+
+	dbpkg "github.com/aeckard87/goServe/db"
+	model "github.com/aeckard87/goServe/models"
 )
 
 // CreateUser returns User
-func CreateUser(params users.CreateUserParams) model.User {
+func CreateUser(user model.User) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	db.Create(&params.Body)
+	db.Create(&user)
 
-	var user model.User
-
-	db.Where("username = ?", params.Body.Username).Find(&user)
+	db.Where("username = ?", user.Username).Find(&user)
 	return user
 }
 
 // UpdateUser returns User
-func UpdateUser(params users.UpdateUserParams) model.User {
+func UpdateUser(user model.User, id string) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var user model.User
-
-	db.Model(&user).Where("id = ?", params.ID).Updates(params.Body)
-	// fmt.Println("UPDATED", user)
-	user.ID = params.ID
+	db.Model(&user).Where("id = ?", id).Updates(user)
 	return user
 
 }
 
 // DeleteUser returns empty User
-func DeleteUser(params users.DeleteUserParams) model.User {
+func DeleteUser(id string) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
 
 	var user model.User
-	user.ID = params.ID
+	user.ID, _ = strconv.ParseInt(id, 10, 64)
 
 	db.Delete(&user)
 
@@ -48,12 +43,11 @@ func DeleteUser(params users.DeleteUserParams) model.User {
 }
 
 // DeleteUsers returns empty User
-func DeleteUsers(params users.DeleteUsersParams) model.User {
+func DeleteUsers() []model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var user model.User
-
+	var user []model.User
 	db.Delete(&user)
 
 	return user
@@ -61,25 +55,25 @@ func DeleteUsers(params users.DeleteUsersParams) model.User {
 }
 
 // GetUser returns User given User.ID
-func GetUser(params users.GetUserParams) model.User {
+func GetUser(id string) model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
 
 	var user model.User
-	user.ID = params.ID
+	user.ID, _ = strconv.ParseInt(id, 10, 64)
 
-	db.First(&user)
+	db.Find(&user)
 
 	return user
 
 }
 
 // GetUsers returns Users
-func GetUsers(params users.GetUsersParams) model.Users {
+func GetUsers() []model.User {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var users model.Users
+	var users []model.User
 
 	db.Find(&users)
 

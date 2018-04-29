@@ -3,41 +3,36 @@ package controllers
 import (
 	"fmt"
 	"log"
+	"strconv"
 
-	dbpkg "github.com/aeckard87/WornOut/db"
-	model "github.com/aeckard87/WornOut/models"
-	"github.com/aeckard87/WornOut/restapi/operations/items"
+	dbpkg "github.com/aeckard87/goServe/db"
+	model "github.com/aeckard87/goServe/models"
 )
 
-// Descriptions struct type
-type Descriptions struct {
-	Descriptors []*model.Descriptors
-}
-
 // CreateItem returns Item
-func CreateItem(params items.CreateItemParams) model.Item {
+func CreateItem(item model.Item) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 	var descriptors []model.Descriptor
 
 	// descriptions, err := json.Marshal(params.Body.Descriptions)
-	descriptors = params.Body.Descriptions
+	descriptors = item.Descriptions
 	// err := json.Unmarshal([]byte(params.Body.Descriptions), &descriptors)
 	// if err != nil {
 	// 	fmt.Println(err)
 	// }
 	// fmt.Println(string(descriptions))
-	db.Exec("INSERT INTO items (name,sub_category_id,user_id) VALUES (?,?,?)", params.Body.Name, params.Body.SubCategoryID, params.Body.UserID)
+	db.Exec("INSERT INTO items (name,sub_category_id,user_id) VALUES (?,?,?)", item.Name, item.SubCategoryID, item.UserID)
 	// , string(descriptions)
 
-	item := GetItemByName(params.Body.Name)
+	item = GetItemByName(item.Name)
 
 	for index, _ := range descriptors {
 		fmt.Println(descriptors[index].Descriptor)
 		db.Exec("INSERT INTO items2descriptors (item_id,descriptor_id) VALUES (?,?)", item.ID, descriptors[index].ID)
 	}
 
-	item = GetItemByName(params.Body.Name)
+	item = GetItemByName(item.Name)
 
 	return item
 }
@@ -84,111 +79,105 @@ func GetItemByName(name string) model.Item {
 }
 
 // UpdateItem returns Item
-func UpdateItem(params items.UpdateItemParams) model.Item {
+func UpdateItem(item model.Item, id string) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var item model.Item
-
-	params.Body.ID = params.ID
-
+	item.ID, _ = strconv.ParseInt(id, 10, 64)
 	// db.Where("id = ?", params.ID).Table("items").Updates(params.Body.Name)
-	db.Model(&item).Where("id = ?", params.ID).Update("name", params.Body.Name)
-	db.Model(&item).Where("id = ?", params.ID).Update("user_id", params.Body.UserID)
-	db.Model(&item).Where("id = ?", params.ID).Update("sub_category_id", params.Body.SubCategoryID)
+	db.Model(&item).Where("id = ?", id).Update("name", item.Name)
+	db.Model(&item).Where("id = ?", id).Update("user_id", item.UserID)
+	db.Model(&item).Where("id = ?", id).Update("sub_category_id", item.SubCategoryID)
 
 	//This Gets everything BUT descriptions
-	db.Select("*").Where("id = ?", params.ID).Find(&item)
+	db.Select("*").Where("id = ?", id).Find(&item)
 
 	//rm all descriptors then add them back *yea I know... how horrible of me.
-	db.Exec("DELETE FROM items2descriptors WHERE item_id = ?;", params.ID)
+	db.Exec("DELETE FROM items2descriptors WHERE item_id = ?;", id)
 
-	descriptors := params.Body.Descriptions
+	descriptors := item.Descriptions
 	for index := range descriptors {
 		fmt.Println(descriptors[index].Descriptor)
-		db.Exec("INSERT INTO items2descriptors (item_id,descriptor_id) VALUES (?,?)", params.ID, descriptors[index].ID)
+		db.Exec("INSERT INTO items2descriptors (item_id,descriptor_id) VALUES (?,?)", id, descriptors[index].ID)
 	}
 
-	item.Descriptions = getItemsDescriptionByID(params.ID)
+	item.Descriptions = getItemsDescriptionByID(item.ID)
 
 	return item
-
 }
 
 // DeleteItem returns empty Item
-func DeleteItem(params items.DeleteItemParams) model.Item {
+func DeleteItem(id string) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
 	var item model.Item
 
-	db.Where("id=?", params.ID).Delete(&item)
+	db.Where("id=?", id).Delete(&item)
 
 	return item
-
 }
 
 // DeleteItems returns empty Item
-func DeleteItems(params items.DeleteItemsParams) model.Item {
+func DeleteItems() []model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var item model.Item
+	var items []model.Item
 
-	db.Delete(&item)
+	db.Delete(&items)
 
-	return item
+	return items
 
 }
 
 // DeleteItemsByOwner returns Itm given User.ID
-func DeleteItemsByOwner(params items.DeleteItemsByOwnerParams) model.Item {
+func DeleteItemsByOwner(id string) []model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var item model.Item
+	var items []model.Item
 
-	db.Where("user_id=?", params.ID).Delete(&item)
+	db.Where("user_id=?", id).Delete(&items)
 
-	return item
+	return items
 
 }
 
 // DeleteItemsBySubCategory returns Item given SubCategory.ID
-func DeleteItemsBySubCategory(params items.DeleteItemsBySubCategoryParams) model.Item {
+func DeleteItemsBySubCategory(id string) []model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var item model.Item
+	var items []model.Item
 
-	db.Where("sub_category_id=?", params.ID).Delete(&item)
+	db.Where("sub_category_id=?", id).Delete(&items)
 
-	return item
+	return items
 
 }
 
 // GetItem returns Item given Item.ID
-func GetItem(params items.GetItemParams) model.Item {
+func GetItem(id string) model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 	var item model.Item
 
 	//This Gets everything BUT descriptions
-	db.Select("*").Where("id = ?", params.ID).Find(&item)
+	db.Select("*").Where("id = ?", id).Find(&item)
 
 	// Gets Descriptions
-	item.Descriptions = getItemsDescriptionByID(params.ID)
+	item.Descriptions = getItemsDescriptionByID(item.ID)
 
 	return item
-
 }
 
 // GetItems returns Items
-func GetItems(params items.GetItemsParams) model.Items {
+func GetItems() []model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var items model.Items
+	var items []model.Item
 
 	db.Select("*").Table("items").Scan(&items)
 	for _, item := range items {
@@ -201,13 +190,13 @@ func GetItems(params items.GetItemsParams) model.Items {
 }
 
 // GetItemsByOwner returns Items given User.ID in params
-func GetItemsByOwner(params items.GetItemsByOwnerParams) model.Items {
+func GetItemsByOwner(id string) []model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var items model.Items
+	var items []model.Item
 
-	db.Select("*").Table("items").Where("user_id=?", params.ID).Scan(&items)
+	db.Select("*").Table("items").Where("user_id=?", id).Scan(&items)
 	for _, item := range items {
 		item.Descriptions = getItemsDescriptionByID(item.ID)
 	}
@@ -217,13 +206,13 @@ func GetItemsByOwner(params items.GetItemsByOwnerParams) model.Items {
 }
 
 // GetItemsBySubCategory returns Items given SubCategory.ID in params
-func GetItemsBySubCategory(params items.GetItemsBySubCategoryParams) model.Items {
+func GetItemsBySubCategory(id string) []model.Item {
 	db := dbpkg.Connect()
 	defer db.Close()
 
-	var items model.Items
+	var items []model.Item
 
-	db.Select("*").Table("items").Where("sub_category_id=?", params.ID).Scan(&items)
+	db.Select("*").Table("items").Where("sub_category_id=?", id).Scan(&items)
 	for _, item := range items {
 		item.Descriptions = getItemsDescriptionByID(item.ID)
 	}
