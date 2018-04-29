@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	controller "github.com/aeckard87/goServe/controllers"
-	model "github.com/aeckard87/goServe/models"
+	controller "github.com/aeckard87/WornOut/controllers"
+	model "github.com/aeckard87/WornOut/models"
 	"github.com/gorilla/mux"
 )
 

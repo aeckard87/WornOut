@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/aeckard87/goServe/models"
+	"github.com/aeckard87/WornOut/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

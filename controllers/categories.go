@@ -3,8 +3,8 @@ package controllers
 import (
 	"strconv"
 
-	dbpkg "github.com/aeckard87/goServe/db"
-	model "github.com/aeckard87/goServe/models"
+	dbpkg "github.com/aeckard87/WornOut/db"
+	model "github.com/aeckard87/WornOut/models"
 	// "github.com/aeckard87/test/client/categories"
 )
 

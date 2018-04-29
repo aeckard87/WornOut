@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	model "github.com/aeckard87/goServe/models"
+	model "github.com/aeckard87/WornOut/models"
 )
 
 func GetBodyBytes(r *http.Request) []byte {

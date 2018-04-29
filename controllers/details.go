@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	dbpkg "github.com/aeckard87/goServe/db"
-	model "github.com/aeckard87/goServe/models"
+	dbpkg "github.com/aeckard87/WornOut/db"
+	model "github.com/aeckard87/WornOut/models"
 )
 
 // CreateDetail returns Detail

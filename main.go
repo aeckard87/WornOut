@@ -11,7 +11,7 @@ import (
 	"log"
 	"net/http"
 
-	sw "github.com/aeckard87/goServe/rest"
+	sw "github.com/aeckard87/WornOut/rest"
 	"github.com/rs/cors"
 )
 
