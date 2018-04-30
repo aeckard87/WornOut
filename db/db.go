@@ -45,25 +45,6 @@ func DBInstance(c *gin.Context) *gorm.DB {
 	return c.MustGet("DB").(*gorm.DB)
 }
 
-// SetPreloads returns *gorm.DB preloads
-// func (par *Parameter) SetPreloads(db *gorm.DB) *gorm.DB {
-// 	if par.Preloads == "" {
-// 		return db
-// 	}
-
-// 	for _, preload := range strings.Split(par.Preloads, ",") {
-// 		var a []string
-
-// 		for _, s := range strings.Split(preload, ".") {
-// 			a = append(a, snaker.SnakeToCamel(s))
-// 		}
-
-// 		db = db.Preload(strings.Join(a, "."))
-// 	}
-
-// 	return db
-// }
-
 func getConnectionString() string {
 	dbUsername := os.Getenv("WORN_OUT_DB_USERNAME")
 	dbPassword := os.Getenv("WORN_OUT_DB_PASSWORD")

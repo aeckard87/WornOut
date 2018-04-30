@@ -10,6 +10,7 @@ import (
 	//
 	"log"
 	"net/http"
+	"os"
 
 	sw "github.com/aeckard87/WornOut/rest"
 	"github.com/rs/cors"
@@ -17,11 +18,13 @@ import (
 
 func main() {
 	log.Printf("Server started")
+	origin := os.Getenv("WORN_OUT_ALLOWED_ORIGIN")
+	allowedPort := os.Getenv("WORN_OUT_ALLOWED_PORT")
 
 	router := sw.NewRouter()
 	handler := cors.Default().Handler(router)
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://10.0.0.13:8100"},
+		AllowedOrigins:   []string{"http://" + origin + ":" + allowedPort},
 		AllowCredentials: true,
 		// Enable Debugging for testing, consider disabling in production
 		Debug:              true,
@@ -32,7 +35,9 @@ func main() {
 	// Insert the middleware
 	handler = c.Handler(handler)
 
-	log.Fatal(http.ListenAndServe(":8081", handler))
+	port := os.Getenv("WORN_OUT_PORT")
+	// log.Fatal(http.ListenAndServe(":8081", handler))
+	log.Fatal(http.ListenAndServe(":"+port, handler))
 }
 
 // package main
